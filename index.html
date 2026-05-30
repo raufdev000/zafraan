@@ -1,0 +1,3208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bảo Vy – Home</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <!-- BUG FIX 1: Removed duplicate gsap.min.js (was loading from both jsdelivr AND cdnjs) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Raleway:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css">
+  
+
+<style>
+/* ═══════════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --crimson:    #9B1B30;
+  --crimson-dk: #7a1525;
+  --gold:       #FFDF00;
+  --rose-gold:  #E8C84A;
+  --white:      #ffffff;
+  --topbar-h:   42px;
+  --nav-h:      80px;          /* desktop */
+  --nav-h-mob:  64px;          /* mobile  */
+  --total-header: calc(var(--topbar-h) + var(--nav-h));
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: #f9f6f0;
+
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════════════════════
+   TOP BAR
+═══════════════════════════════════════════════ */
+.tb {
+  background: var(--crimson);
+  height: var(--topbar-h);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  z-index: 200;
+  flex-shrink: 0;
+}
+
+.tb__inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0 140px 0 16px; /* right padding leaves room for socials */
+}
+
+/* Scrolling marquee text */
+.tb__marquee {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
+.tb__msg {
+  display: inline-block;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .3px;
+  animation: tbScroll 22s linear infinite;
+}
+@keyframes tbScroll {
+  0%   { transform: translateX(60vw); }
+  100% { transform: translateX(-100%); }
+}
+
+/* Social pill — absolutely positioned right */
+.tb__socials {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 30px;
+  display: flex;
+  align-items: stretch;
+  background: var(--gold);
+  border-radius: 999px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.tb__scell {
+  width: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid rgba(155,27,48,.2);
+  /* FIX: icon color is crimson on gold — readable */
+  color: var(--crimson);
+  font-size: 13px;
+  text-decoration: none;
+  transition: background .2s, color .2s;
+}
+.tb__scell:first-child { border-left: none; }
+.tb__scell:hover { background: var(--crimson); color: var(--gold); }
+
+/* ═══════════════════════════════════════════════
+   NAVBAR  — sticky, sits on top of hero
+═══════════════════════════════════════════════ */
+.nb {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  padding: 10px 10px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+background:  #9B1B30;
+ 
+  min-height: var(--nav-h);
+}
+/* Scrolled state applied by JS */
+.nb.scrolled {
+ background: transparent;
+  box-shadow: 0 2px 24px rgba(0,0,0,.1);
+  padding: 6px 20px;
+  backdrop-filter: blur(12px);
+}
+
+/* Brand card */
+.nb__brand {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 8px 18px 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: box-shadow .22s, transform .22s;
+  box-shadow: 0 2px 12px rgba(0,0,0,.12);
+}
+.nb__brand:hover { box-shadow: 0 6px 24px rgba(0,0,0,.18); transform: translateY(-1px); }
+.nb__logo {
+  width: 38px; height: 38px;
+  border-radius: 8px;
+  background: #fff8e7;
+  border: 2px dashed var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--crimson); font-size: 18px; flex-shrink: 0;
+}
+.nb__name {
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--crimson);
+  white-space: nowrap;
+  letter-spacing: -.1px;
+}
+
+/* Nav pill — FIX: pill hugs the nav links, no dead space on right */
+.nb__pill {
+  background: rgba(255,255,255,.92);
+  border-radius: 999px;
+  height: 58px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 28px;
+  box-shadow: 0 2px 16px rgba(0,0,0,.1);
+  backdrop-filter: blur(8px);
+  min-width: 0;
+  overflow: visible;
+  align-self: center; 
+}
+.nb__list {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  width: auto;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: nowrap;
+}
+/* FIX: renamed from .dot to .nb__sep to avoid perfume carousel clash */
+.nb__sep {
+  color: var(--crimson);
+  font-size: 6px;
+  margin: 0 4px;
+  flex-shrink: 0;
+  opacity: .65;
+  user-select: none;
+}
+.nb__list li a {
+  font-family: 'Cinzel', serif;
+  color: #222;
+  text-decoration: none;
+  font-size: clamp(13px, 1.4vw, 17px);
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 8px;
+  white-space: nowrap;
+  position: relative;
+  transition: color .2s, background .2s;
+  display: block;
+}
+.nb__list li a::after {
+  content: '';
+  position: absolute;
+  bottom: 2px; left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 60%; height: 2px;
+  background: var(--gold);
+  border-radius: 2px;
+  transition: transform .22s ease;
+}
+.nb__list li a:hover { color: var(--crimson); background: rgba(155,27,48,.05); }
+.nb__list li a:hover::after,
+.nb__list li a.nb--active::after { transform: translateX(-50%) scaleX(1); }
+.nb__list li a.nb--active { color: var(--crimson); }
+
+/* Hamburger — hidden on desktop */
+.nb__toggler {
+  display: none;
+  background: var(--white);
+  border: none;
+  border-radius: 12px;
+  width: 46px; height: 46px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: box-shadow .2s;
+  box-shadow: 0 2px 12px rgba(0,0,0,.12);
+}
+.nb__toggler:hover { box-shadow: 0 4px 16px rgba(155,27,48,.25); }
+.nb__bar {
+  width: 22px; height: 2.5px;
+  background: var(--crimson);
+  border-radius: 2px;
+  transition: transform .3s, opacity .3s;
+}
+.nb__toggler.nb--open .nb__bar:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+.nb__toggler.nb--open .nb__bar:nth-child(2) { opacity: 0; }
+.nb__toggler.nb--open .nb__bar:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+/* ═══════════════════════════════════════════════
+   MOBILE NAV DROPDOWN
+═══════════════════════════════════════════════ */
+.nb__mobile {
+  display: none;              /* hidden until .nb--open added */
+  position: sticky;
+  top: var(--nav-h-mob);
+  z-index: 190;
+  background: var(--white);
+  border-radius: 0 0 20px 20px;
+  margin: 0;
+  padding: 8px 12px 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.14);
+  animation: mobSlide .25s ease;
+  max-height: calc(100vh - var(--topbar-h) - var(--nav-h-mob));
+  overflow-y: auto;
+}
+.nb__mobile.nb--open { display: block; }
+@keyframes mobSlide {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.nb__mobile a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #222;
+  text-decoration: none;
+  transition: background .18s, color .18s, padding-left .2s;
+}
+.nb__mobile a:hover,
+.nb__mobile a.nb--active { background: rgba(155,27,48,.07); color: var(--crimson); padding-left: 22px; }
+.nb__mobile a.nb--active { font-weight: 600; }
+.nb__msep { height: 1px; background: rgba(155,27,48,.1); margin: 4px 8px; }
+
+/* ═══════════════════════════════════════════════
+   HERO
+   FIX: no negative margin-top — hero stacks naturally
+   below sticky navbar. Height = 100vh minus header.
+═══════════════════════════════════════════════ */
+.hr {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - var(--topbar-h) - var(--nav-h));
+  min-height: 500px;
+  overflow: hidden;
+}
+
+/* Slide backgrounds */
+.hr__bg {
+  position: absolute; inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  z-index: 0;
+  transition: opacity .9s ease;
+}
+.hr__bg.hr--active { opacity: 1; }
+.hr__bg::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(0,0,0,.85) 0%,
+    rgba(155,27,48,.28) 55%,
+    rgba(0,0,0,.78) 100%
+  );
+}
+
+/* Slide images — replace with your actual files */
+.hr__bg-1 { background-image: url('slide1.webp'); }
+.hr__bg-2 { background-image: url('Saffraan.webp'); }
+.hr__bg-3 { background-image: url('slide2.webp'); }
+
+/* Fallback gradient when images missing (demo) */
+.hr__bg-1 { background-color: #1a0a0e; }
+.hr__bg-2 { background-color: #0d1a0e; }
+.hr__bg-3 { background-color: #0a0d1a; }
+
+/* Content */
+.hr__content {
+  position: absolute; inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 24px 80px;
+  pointer-events: none;
+}
+
+/* Badge */
+.hr__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #972739 0%, #b5566a 45%, #9B1B30 100%);
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 10px 22px;
+  border-radius: 999px;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+  pointer-events: auto;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.2) inset,
+              0 4px 20px rgba(155,27,48,.5);
+}
+.hr__badge::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -75%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.45), transparent);
+  transform: skewX(-20deg);
+  animation: hrShimmer 2.8s ease-in-out infinite;
+}
+@keyframes hrShimmer {
+  0%  { left: -75%; }
+  60% { left: 130%; }
+  100%{ left: 130%; }
+}
+.hr__bdot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,.7); flex-shrink: 0; }
+
+/* Heading */
+.hr__heading {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(28px, 5.5vw, 72px);
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1.08;
+  letter-spacing: -1px;
+  margin-bottom: 18px;
+  max-width: 880px;
+  text-shadow: 0 4px 32px rgba(0,0,0,.4);
+}
+
+/* Sub */
+.hr__sub {
+  font-size: clamp(13px, 1.6vw, 16px);
+  color: rgba(255,255,255,.82);
+  max-width: 580px;
+  line-height: 1.8;
+  margin-bottom: 38px;
+  font-weight: 400;
+}
+
+/* CTA button */
+.hr__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #972739 0%, #b5566a 45%, #9B1B30 100%);
+  color: var(--gold);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 14px 36px;
+  border-radius: 999px;
+  text-decoration: none;
+  letter-spacing: .2px;
+  pointer-events: auto;
+  transition: background .22s, color .22s, transform .22s, box-shadow .22s;
+  box-shadow: 0 8px 32px rgba(0,0,0,.22);
+}
+.hr__cta:hover {
+  background: var(--crimson-dk);
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 14px 40px rgba(155,27,48,.45);
+}
+.hr__cta i { font-size: 17px; }
+
+/* Arrows — FIX: renamed IDs heroPrevBtn/heroNextBtn, no ID conflict */
+.hr__arrow {
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  z-index: 10;
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.15);
+  border: 1.5px solid rgba(255,255,255,.35);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  color: #fff;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: background .2s, color .2s, transform .2s, box-shadow .2s;
+}
+.hr__arrow:hover {
+  background: var(--crimson);
+  border-color: var(--gold);
+  color: var(--gold);
+  transform: translateY(-50%) scale(1.08);
+  box-shadow: 0 6px 28px rgba(155,27,48,.45);
+}
+.hr__arrow--prev { left: 20px; }
+.hr__arrow--next { right: 20px; }
+
+/* Dots — FIX: renamed .cdot → .hr__dot to avoid any style bleed */
+.hr__dots {
+  position: absolute;
+  bottom: 24px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.hr__dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.4);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background .3s, transform .3s, width .3s;
+}
+.hr__dot.hr--active {
+  background: var(--gold);
+  transform: scale(1.35);
+  width: 24px;
+  border-radius: 5px;
+}
+
+/* Progress bar */
+.hr__progress {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: rgba(255,255,255,.12);
+  z-index: 10;
+}
+.hr__progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--crimson), var(--gold));
+  transition: width linear;
+}
+
+/* Slide counter */
+.hr__counter {
+  position: absolute;
+  bottom: 20px;
+  right: 24px;
+  z-index: 10;
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  color: rgba(255,255,255,.55);
+  letter-spacing: 2px;
+  pointer-events: none;
+}
+.hr__counter span { color: var(--gold); font-weight: 700; }
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+═══════════════════════════════════════════════ */
+
+/* Tablet */
+@media (max-width: 991px) {
+  .nb__pill  { display: none; }
+  .nb__toggler { display: flex; }
+  .nb { min-height: var(--nav-h-mob); padding: 8px 16px; }
+
+  .hr {
+    height: calc(100vh - var(--topbar-h) - var(--nav-h-mob));
+    min-height: 420px;
+  }
+  .hr__content { padding: 30px 20px 70px; }
+  .hr__arrow { width: 40px; height: 40px; font-size: 15px; }
+  .hr__arrow--prev { left: 12px; }
+  .hr__arrow--next { right: 12px; }
+
+  /* Topbar: hide scrolling text on very small, keep socials */
+  .tb__inner { padding: 0 130px 0 12px; }
+}
+
+/* Mobile */
+@media (max-width: 575px) {
+  :root { --topbar-h: 38px; }
+
+  .tb__msg { font-size: 12px; }
+  .tb__scell { width: 30px; font-size: 12px; }
+
+  .nb__brand { padding: 6px 14px 6px 10px; border-radius: 12px; }
+  .nb__logo  { width: 34px; height: 34px; font-size: 16px; }
+  .nb__name  { font-size: 16px; }
+
+  .hr__heading { letter-spacing: -.5px; }
+  .hr__badge   { font-size: 10px; padding: 8px 16px; }
+  .hr__cta     { font-size: 14px; padding: 12px 28px; }
+
+  /* Hide arrows on very small screens — swipe instead */
+  .hr__arrow { display: none; }
+  .hr__counter { display: none; }
+
+  .hr__dots { bottom: 16px; }
+}
+
+/* Large desktop */
+@media (min-width: 1400px) {
+  .nb__list li a { font-size: 17px; padding: 8px 14px; }
+  .nb__pill { padding: 0 40px; }
+}
+</style>
+    <style>
+
+    .ft { background: #0d0407;  color: #999; border-top: 3px solid #9B1B30; }
+
+    .ft-top { background: #9B1B30; padding: 10px 0; text-align: center; }
+    .ft-top p { font-family: 'Playfair Display', serif; color: #FFDF00; font-size: 13px; letter-spacing: 1.5px; font-style: italic; }
+
+    .ft-body { padding: 40px 0 28px; }
+
+    .logo-box { width: 100px; height: 100px; border: 2px dashed #E8C84A; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; margin-bottom: 12px; }
+    .logo-box i { font-size: 28px; color: #E8C84A; }
+    .logo-box span { font-size: 9px; color: #E8C84A; letter-spacing: 1px; opacity: .7; }
+
+    .brand { font-family: 'Playfair Display', serif; font-size: 22px; color: #FFDF00; letter-spacing: 2px; }
+    .brand-sub { font-size: 10px; color: #E8C84A; letter-spacing: 2.5px; text-transform: uppercase; opacity: .75; margin-bottom: 10px; }
+    .desc { font-size: 12.5px; color: #888; line-height: 1.7; max-width: 230px; }
+
+    .social { display: flex; gap: 8px; margin-top: 14px; }
+    .social a { width: 32px; height: 32px; border: 1px solid #2a1018; border-radius: 7px; display: flex; align-items: center; justify-content: center; color: #888; font-size: 14px; text-decoration: none; transition: all .2s; }
+    .social a:hover { background: #9B1B30; border-color: #9B1B30; color: #FFDF00; }
+
+    .col-head { font-family: 'Playfair Display', serif; font-size: 15px; color: #FFDF00; font-weight: 700; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #9B1B30; display: inline-block; }
+
+    .lnks { list-style: none; padding: 0; }
+    .lnks li { margin-bottom: 8px; }
+    .lnks li a { color: #888; font-size: 12.5px; text-decoration: none; display: flex; align-items: center; gap: 7px; transition: color .2s; }
+    .lnks li a i { color: #9B1B30; font-size: 13px; }
+    .lnks li a:hover { color: #FFDF00; }
+
+    .ci { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
+    .ci-icon { width: 32px; height: 32px; background: #9B1B30; border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .ci-icon i { color: #FFDF00; font-size: 14px; }
+    .ci-text { font-size: 12px; color: #888; line-height: 1.6; }
+    .ci-text strong { display: block; color: #E8C84A; font-size: 10.5px; letter-spacing: .8px; text-transform: uppercase; margin-bottom: 1px; }
+
+    .ft-bottom { background: #080205; padding: 12px 0; text-align: center; }
+    .ft-bottom p { font-size: 11.5px; color: #444; }
+    .ft-bottom span { color: #9B1B30; }
+    .bot-links { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 6px; }
+    .bot-links a { font-size: 11px; color: #444; text-decoration: none; }
+    .bot-links a:hover { color: #E8C84A; }
+  </style>
+
+<style> *{box-sizing:border-box;margin:0;padding:0}
+.hon-side-top { position: absolute; width: 38%; aspect-ratio: 1/1; }
+.hon-side-bot { position: absolute; width: 34%; aspect-ratio: 1/1.1; }
+.hon-section{
+  background:#0d0406;
+  color:#FFDF00;
+  padding:80px 0;
+  position:relative;
+  overflow:hidden;
+
+}
+
+.hon-watermark{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%) rotate(-30deg);
+  font-size:clamp(80px,16vw,160px);
+  font-weight:900;
+  color:rgba(255,223,0,0.04);
+  letter-spacing:0.3em;
+  pointer-events:none;
+  white-space:nowrap;
+  user-select:none;
+}
+
+.hon-vert-label{
+  position:absolute;
+  left:16px;top:50%;
+  transform:translateY(-50%) rotate(-90deg);
+  font-size:11px;
+  letter-spacing:0.35em;
+  color:#9B1B30;
+  text-transform:uppercase;
+  opacity:0.7;
+  white-space:nowrap;
+}
+
+.hon-scent-circle{
+  position:absolute;
+  width:500px;height:500px;
+  border-radius:50%;
+  border:1px solid rgba(155,27,48,0.15);
+  top:50%;right:-200px;
+  transform:translateY(-50%);
+  pointer-events:none;
+}
+
+.hon-scent-circle::before{
+  content:'';
+  position:absolute;
+  inset:40px;
+  border-radius:50%;
+  border:1px solid rgba(232,200,74,0.08);
+}
+
+.container{
+  max-width:1140px;
+  margin:0 auto;
+  padding:0 40px 0 60px;
+  position:relative;
+  z-index:1;
+}
+
+.hon-img-stack{
+  position:relative;
+  height:480px;
+}
+
+
+.hon-img-card img{
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+  opacity:0.92;
+}
+
+.hon-main{
+  width:72%;height:78%;
+  top:0;left:0;
+  z-index:2;
+  border-color:rgba(232,200,74,0.4);
+  box-shadow:0 0 0 1px rgba(155,27,48,0.3);
+   position: relative;
+  aspect-ratio: 4/4.5;
+}
+
+.hon-img-badge{
+  position:absolute;
+  top:14px;left:14px;
+  background:#9B1B30;
+  color:#FFDF00;
+  font-size:10px;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  padding:5px 12px;
+  border-radius:2px;
+  z-index:3;
+  font-family:sans-serif;
+}
+
+.hon-side-top{
+  width:42%;height:38%;
+  top:10%;right:0;
+  z-index:3;
+  border-color:rgba(232,200,74,0.3);
+}
+
+.hon-side-bot{
+  width:38%;height:34%;
+  bottom:0;right:8%;
+  z-index:1;
+  border-color:rgba(155,27,48,0.4);
+}
+
+.hon-content-col{
+  padding-left:8px;
+}
+
+.hon-ornament{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:22px;
+}
+
+.hon-orn-line{
+  display:block;
+  width:32px;height:1px;
+  background:#9B1B30;
+}
+
+.hon-orn-diamond{
+  display:block;
+  width:6px;height:6px;
+  background:#FFDF00;
+  transform:rotate(45deg);
+  flex-shrink:0;
+}
+
+.hon-orn-text{
+  font-size:11px;
+  letter-spacing:0.25em;
+  color:#E8C84A;
+  text-transform:uppercase;
+  
+}
+
+.hon-about-heading{
+  font-size:clamp(30px,4vw,46px);
+  font-weight:400;
+  line-height:1.18;
+  color:#F5E8A0;
+  margin-bottom:8px;
+  letter-spacing:-0.01em;
+}
+
+.hon-highlight{
+  color:#FFDF00;
+  font-style:italic;
+}
+
+.hon-about-sub{
+  font-size:13px;
+  letter-spacing:0.3em;
+  text-transform:uppercase;
+  color:#9B1B30;
+  margin-bottom:20px;
+}
+
+.hon-hr-fancy{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:20px;
+}
+
+.hon-hr-fancy span{
+  flex:1;height:1px;
+  background:linear-gradient(90deg,#9B1B30,transparent);
+}
+
+.hon-hr-fancy span:last-child{
+  background:linear-gradient(270deg,#9B1B30,transparent);
+}
+
+.hon-hr-fancy i{
+  color:#E8C84A;
+  font-size:12px;
+  font-style:normal;
+}
+
+.hon-about-body{
+  font-size:15px;
+  line-height:1.75;
+  color:rgba(245,232,160,0.72);
+  margin-bottom:14px;
+
+}
+
+.hon-about-body strong{
+  color:#E8C84A;
+  font-weight:600;
+}
+
+.hon-royal-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:20px 0 24px;
+}
+
+.hon-rtag{
+  font-size:10px;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  padding:5px 14px;
+  border-radius:2px;
+  font-family:sans-serif;
+  font-weight:600;
+}
+
+.hon-rtag.hon-gold{
+  background:rgba(255,223,0,0.1);
+  border:1px solid rgba(255,223,0,0.35);
+  color:#FFDF00;
+}
+
+.hon-rtag.hon-red{
+  background:rgba(155,27,48,0.15);
+  border:1px solid rgba(155,27,48,0.5);
+  color:#E8C84A;
+}
+
+.hon-rtag.hon-amber{
+  background:rgba(232,200,74,0.1);
+  border:1px solid rgba(232,200,74,0.3);
+  color:#E8C84A;
+}
+
+.hon-stat-row{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1px;
+  border:1px solid rgba(155,27,48,0.3);
+  border-radius:8px;
+  overflow:hidden;
+  margin-bottom:28px;
+  background:rgba(155,27,48,0.15);
+}
+
+.hon-stat-item{
+  padding:16px 12px;
+  text-align:center;
+  background:#0d0406;
+  border-right:1px solid rgba(155,27,48,0.2);
+}
+
+.hon-stat-item:last-child{
+  border-right:none;
+}
+
+.hon-stat-num{
+  font-size:22px;
+  font-weight:700;
+  color:#FFDF00;
+  letter-spacing:-0.02em;
+  font-family:sans-serif;
+}
+
+.hon-stat-lbl{
+  font-size:10px;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:rgba(232,200,74,0.55);
+  margin-top:4px;
+ 
+}
+
+.hon-cta-row{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  flex-wrap:wrap;
+}
+
+.hon-btn-royal{
+  display:inline-block;
+  background:#9B1B30;
+  color:#FFDF00;
+  text-decoration:none;
+  padding:13px 32px;
+  font-size:12px;
+  letter-spacing:0.25em;
+  text-transform:uppercase;
+  font-weight:600;
+  border-radius:3px;
+  border:1px solid #9B1B30;
+  transition:background 0.2s,color 0.2s;
+}
+
+.hon-btn-royal:hover{
+  color: #9B1B30;
+  background:  #E8C84A;;
+  border-color:#FFDF00;;
+}
+
+.hon-btn-ghost{
+  color:#E8C84A;
+  text-decoration:none;
+  font-size:12px;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  font-weight:600;
+  border-bottom:1px solid rgba(232,200,74,0.35);
+  padding-bottom:2px;
+  transition:color 0.2s;
+}
+
+.hon-btn-ghost:hover{
+  color:#FFDF00;
+}
+
+@media(max-width:900px){
+  .row.align-items-center{
+    flex-direction:column;
+  }
+  .col-lg-5,.col-lg-7{
+    width:100%;
+  }
+  .hon-img-stack{
+    height:360px;
+  }
+  .hon-stat-row{
+    grid-template-columns:repeat(2,1fr);
+  }
+  .hon-stat-item:nth-child(2){
+    border-right:none;
+  }
+  .hon-stat-item:nth-child(3){
+    border-right:1px solid rgba(155,27,48,0.2);
+  }
+  .container{
+    padding:0 20px;
+  }
+  .hon-vert-label{
+    display:none;
+  }
+}
+
+@media(max-width:560px){
+  .hon-img-stack{
+    height:280px;
+  }
+  .hon-side-top,
+  .hon-side-bot{
+    display:none;
+  }
+  .hon-main{
+    width:100%;
+    height:100%;
+  }
+  .hon-stat-row{
+    grid-template-columns:repeat(2,1fr);
+  }
+  .hon-section{
+    padding:50px 0;
+  }
+
+}</style>
+<style>
+  :root {
+    --crimson: #9B1B30;
+    --gold: #FFDF00;
+    --rose-gold: #E8C84A;
+    --dark: #0a0204;
+    --dark-mid: #150508;
+    --card-bg: rgba(155,27,48,0.13);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--dark);
+    
+    color: #f5e9d0;
+    min-height: 100vh;
+  }
+
+  .perfume-section {
+    background: linear-gradient(160deg, #0a0204 0%, #1a050a 40%, #0e0306 70%, #150508 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 60px 0 50px;
+  }
+
+  .perfume-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 50%, rgba(155,27,48,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 80% 30%, rgba(232,200,74,0.07) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .perfume-section::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--rose-gold), var(--gold), var(--rose-gold), transparent);
+  }
+
+  .section-eyebrow {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--rose-gold);
+    margin-bottom: 10px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 300;
+    color: #f5e9d0;
+    line-height: 1.15;
+    letter-spacing: 1px;
+  }
+
+  .section-title span {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .gold-divider {
+    width: 60px;
+    height: 1.5px;
+    background: linear-gradient(90deg, var(--rose-gold), var(--gold));
+    margin: 14px auto;
+  }
+
+  .section-subtitle {
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: rgba(245,233,208,0.5);
+    text-transform: uppercase;
+  }
+
+  .hero-image-slot {
+    position: relative;
+    border: 1px solid rgba(232,200,74,0.25);
+    border-radius: 4px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #1a050a 0%, #2a080f 50%, #1a050a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    height: 100%;
+  }
+
+  .hero-image-slot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.85;
+    transition: opacity 0.5s ease, transform 0.6s ease;
+  }
+
+  .hero-image-slot:hover img { opacity: 1; transform: scale(1.03); }
+
+  .hero-badge {
+    position: absolute;
+    top: 16px; left: 16px;
+    background: rgba(155,27,48,0.85);
+    border: 1px solid var(--rose-gold);
+    color: var(--gold);
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    backdrop-filter: blur(4px);
+  }
+
+  .hero-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(10,2,4,0.92) 0%, transparent 100%);
+    padding: 24px 20px 20px;
+  }
+
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: #f5e9d0;
+  }
+
+  .hero-price {
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  .carousel-outer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .carousel-track-wrap {
+    overflow: hidden;
+    border-radius: 2px;
+  }
+
+  .carousel-track {
+    display: flex;
+    gap: 14px;
+    transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+    will-change: transform;
+  }
+
+  .perfume-card {
+    flex: 0 0 calc(33.333% - 10px);
+    min-width: 200px;
+    background: var(--card-bg);
+    border: 1px solid rgba(232,200,74,0.18);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+    transition: border-color 0.3s, transform 0.3s;
+    cursor: pointer;
+  }
+
+  @media (max-width: 991px) {
+    .perfume-card { flex: 0 0 calc(50% - 7px); }
+  }
+  @media (max-width: 575px) {
+    .perfume-card { flex: 0 0 calc(100% - 0px); }
+  }
+
+  .perfume-card:hover {
+    border-color: rgba(232,200,74,0.55);
+    transform: translateY(-3px);
+  }
+
+  .card-image-wrap {
+    position: relative;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    background: linear-gradient(160deg, #1a050a, #250a10);
+  }
+
+  .card-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    opacity: 0.88;
+  }
+
+  .perfume-card:hover .card-image-wrap img {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+
+  .card-tag {
+    position: absolute;
+    top: 10px; right: 10px;
+    font-size: 8px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: rgba(155,27,48,0.8);
+    border: 1px solid rgba(232,200,74,0.3);
+    padding: 3px 8px;
+    backdrop-filter: blur(4px);
+  }
+
+  .card-wishlist {
+    position: absolute;
+    top: 10px; left: 10px;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 1px solid rgba(232,200,74,0.3);
+    background: rgba(10,2,4,0.6);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+    transition: background 0.3s, border-color 0.3s;
+    font-size: 13px;
+    color: rgba(232,200,74,0.7);
+  }
+
+  .card-wishlist:hover {
+    background: var(--crimson);
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .card-body-inner {
+    padding: 14px 14px 16px;
+    background: linear-gradient(180deg, rgba(155,27,48,0.1) 0%, rgba(10,2,4,0.5) 100%);
+  }
+
+  .card-brand {
+    font-size: 8px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--rose-gold);
+    margin-bottom: 4px;
+  }
+
+  .card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: #f5e9d0;
+    line-height: 1.25;
+    margin-bottom: 4px;
+  }
+
+  .card-notes {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    color: rgba(245,233,208,0.45);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  .card-footer-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .card-price {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+  }
+
+  .card-price small {
+    font-size: 9px;
+    font-weight: 400;
+    color: rgba(245,233,208,0.45);
+    letter-spacing: 1px;
+    display: block;
+    text-transform: uppercase;
+  }
+
+  .btn-add-cart {
+    background: var(--crimson);
+    border: 1px solid rgba(232,200,74,0.35);
+    color: var(--gold);
+    font-size: 8px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 7px 12px;
+    border-radius: 1px;
+    cursor: pointer;
+    transition: background 0.25s, border-color 0.25s, color 0.25s;
+    white-space: nowrap;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+  }
+
+  .btn-add-cart:hover {
+    background: var(--gold);
+    color: var(--crimson);
+    border-color: var(--gold);
+  }
+
+  .btn-add-cart.added {
+    background: #1a4d1a;
+    border-color: #4caf50;
+    color: #b8f5b8;
+  }
+
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  .dot {
+    width: 28px; height: 2px;
+    background: rgba(232,200,74,0.25);
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s, width 0.3s;
+    padding: 0;
+    border-radius: 1px;
+  }
+
+  .dot.active {
+    background: var(--gold);
+    width: 42px;
+  }
+
+  .carousel-nav {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-bottom: 14px;
+  }
+
+  .nav-btn {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(232,200,74,0.3);
+    background: transparent;
+    color: var(--rose-gold);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    transition: background 0.25s, border-color 0.25s, color 0.25s;
+    border-radius: 1px;
+  }
+
+  .nav-btn:hover {
+    background: var(--crimson);
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .btn-view-all {
+    display: inline-block;
+    border: 1px solid rgba(232,200,74,0.4);
+    background: transparent;
+    color: var(--rose-gold);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 12px 32px;
+    text-decoration: none;
+    transition: background 0.25s, color 0.25s, border-color 0.25s;
+    cursor: pointer;
+    border-radius: 1px;
+  }
+
+  .btn-view-all:hover {
+    background: rgba(155,27,48,0.5);
+    color: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .bottom-accent {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--crimson), var(--rose-gold), var(--gold), var(--rose-gold), var(--crimson), transparent);
+    margin-top: 50px;
+  }
+
+  /* BUG FIX 2: cartToast element added (was missing from HTML but used in JS) */
+  .cart-toast {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    background: var(--crimson);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 12px 22px;
+    border-radius: 2px;
+    z-index: 9999;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+    pointer-events: none;
+  }
+
+  .cart-toast.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .auto-progress {
+    height: 2px;
+    background: rgba(232,200,74,0.15);
+    position: relative;
+    overflow: hidden;
+    margin-top: 14px;
+    border-radius: 1px;
+  }
+
+  .auto-progress-fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    background: linear-gradient(90deg, var(--crimson), var(--rose-gold), var(--gold));
+    width: 0%;
+    transition: width linear;
+    border-radius: 1px;
+  }
+
+  @media (max-width: 767px) {
+    .perfume-section { padding: 40px 0 36px; }
+    .hero-image-slot { min-height: 260px; margin-bottom: 20px; }
+  }
+</style>
+<style>
+@keyframes fadeSlideIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes imgReveal{from{opacity:0;transform:scale(1.06)}to{opacity:1;transform:scale(1)}}
+@keyframes badgePop{from{opacity:0;transform:scale(0.7)}to{opacity:1;transform:scale(1)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.6}}
+
+.wrap{width:100%;padding: 48px 16px 24px; ;}
+.pc{
+  display:grid;grid-template-columns:42% 58%;
+  border-radius:20px;overflow:hidden;
+  border:1px solid rgba(232,200,74,0.3);
+  background:linear-gradient(135deg,#1a0008 0%,#0d0005 40%,#150010 70%,#0a0003 100%);
+  animation:fadeSlideIn 0.6s cubic-bezier(.22,1,.36,1) both;
+}
+
+.img-side{
+  position:relative;overflow:hidden;
+  min-height:480px;display:flex;flex-direction:column;
+  background:#0d0005;
+}
+.img-side img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  animation:imgReveal 0.8s cubic-bezier(.22,1,.36,1) 0.2s both;
+  transition:transform 0.6s cubic-bezier(.22,1,.36,1);
+}
+.img-side:hover img{transform:scale(1.05);}
+.img-grad{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(26,0,8,0.35) 0%,transparent 40%,rgba(10,0,3,0.7) 100%);pointer-events:none;}
+.badge-premium{
+  position:absolute;top:14px;left:14px;
+  background:#9B1B30;color:#FFDF00;
+  font-size:9px;font-weight:700;padding:5px 13px;border-radius:20px;
+  letter-spacing:0.14em;text-transform:uppercase;z-index:3;
+  animation:badgePop 0.5s cubic-bezier(.34,1.56,.64,1) 0.5s both;
+  border:1px solid rgba(255,223,0,0.3);
+}
+.badge-vn{
+  position:absolute;top:14px;right:14px;
+  background:rgba(255,223,0,0.12);color:#FFDF00;
+  font-size:9px;font-weight:700;padding:5px 12px;border-radius:20px;
+  letter-spacing:0.08em;z-index:3;border:1px solid rgba(255,223,0,0.4);
+  animation:badgePop 0.5s cubic-bezier(.34,1.56,.64,1) 0.6s both;
+  backdrop-filter:blur(4px);
+}
+.img-bottom{
+  position:absolute;bottom:0;left:0;right:0;
+  background:rgba(155,27,48,0.92);
+  padding:10px 14px;display:flex;align-items:center;gap:10px;z-index:3;
+  backdrop-filter:blur(6px);
+  border-top:1px solid rgba(232,200,74,0.2);
+}
+.img-bottom-icon{width:26px;height:26px;background:#FFDF00;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.img-bottom-text{color:#FFDF00;font-size:10px;font-weight:600;line-height:1.4;}
+
+.info{
+  padding:1.6rem 1.4rem;display:flex;flex-direction:column;gap:13px;
+  animation:fadeSlideIn 0.7s cubic-bezier(.22,1,.36,1) 0.15s both;
+}
+.brand-row{display:flex;align-items:center;gap:7px;}
+.brand-dot{width:5px;height:5px;background:#E8C84A;border-radius:50%;animation:pulse 2s infinite;}
+.brand-name{font-size:10px;font-weight:700;color:#E8C84A;letter-spacing:0.18em;text-transform:uppercase;}
+.prod-title{font-size:18px;font-weight:700;color:#fff;line-height:1.25;margin-top:4px;}
+.prod-sub{font-size:11px;color:rgba(232,200,74,0.6);margin-top:3px;font-style:italic;}
+
+.rating-row{display:flex;align-items:center;gap:7px;}
+.stars-fill{display:flex;gap:2px;}
+.star{width:13px;height:13px;fill:#E8C84A;}
+.rating-num{font-size:12px;font-weight:700;color:#fff;}
+.rating-count{font-size:10px;color:rgba(255,255,255,0.45);}
+
+.price-block{
+  background:rgba(155,27,48,0.18);border-radius:10px;padding:11px 13px;
+  border:1px solid rgba(155,27,48,0.4);
+  position:relative;overflow:hidden;
+}
+.price-block::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(232,200,74,0.04),transparent);
+  background-size:200% 100%;
+  animation:shimmer 3s infinite;
+}
+.price-top{display:flex;align-items:baseline;gap:9px;position:relative;}
+.price-now{font-size:24px;font-weight:800;color:#FFDF00;letter-spacing:-0.5px;}
+.price-was{font-size:12px;color:rgba(255,255,255,0.35);text-decoration:line-through;}
+.price-tag{background:#9B1B30;color:#FFDF00;font-size:9px;font-weight:700;padding:3px 9px;border-radius:10px;border:1px solid rgba(255,223,0,0.3);}
+.price-note{font-size:10px;color:rgba(232,200,74,0.55);margin-top:5px;position:relative;}
+
+.divider{height:1px;background:rgba(232,200,74,0.12);}
+.sec-label{font-size:9px;font-weight:700;color:#E8C84A;text-transform:uppercase;letter-spacing:0.14em;margin-bottom:7px;opacity:0.8;}
+
+.weight-grid{display:flex;gap:6px;flex-wrap:wrap;}
+.wbtn{
+  padding:6px 14px;border-radius:8px;
+  border:1px solid rgba(232,200,74,0.3);
+  background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.7);
+  font-size:11px;font-weight:600;cursor:pointer;
+  transition:all 0.22s cubic-bezier(.22,1,.36,1);
+}
+.wbtn:hover:not(.on){background:rgba(232,200,74,0.1);border-color:#E8C84A;color:#E8C84A;transform:translateY(-2px);}
+.wbtn.on{background:#9B1B30;color:#FFDF00;border-color:rgba(255,223,0,0.4);transform:translateY(-1px);}
+
+.qty-row{display:flex;align-items:center;gap:13px;}
+.qctrl{display:flex;align-items:center;border:1px solid rgba(232,200,74,0.3);border-radius:9px;overflow:hidden;}
+.qbtn{
+  width:32px;height:32px;border:none;
+  background:rgba(232,200,74,0.08);color:#E8C84A;
+  font-size:16px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.18s;
+}
+.qbtn:hover{background:rgba(155,27,48,0.5);color:#FFDF00;}
+.qnum{width:36px;text-align:center;font-size:14px;font-weight:700;color:#fff;background:rgba(255,255,255,0.04);border-left:1px solid rgba(232,200,74,0.2);border-right:1px solid rgba(232,200,74,0.2);padding:6px 0;}
+.stock-txt{font-size:10px;color:#E8C84A;font-weight:600;opacity:0.8;}
+
+.chips{display:flex;gap:5px;flex-wrap:wrap;}
+.chip{
+  font-size:9px;color:rgba(232,200,74,0.9);
+  background:rgba(232,200,74,0.08);
+  border:1px solid rgba(232,200,74,0.2);
+  padding:4px 9px;border-radius:20px;font-weight:600;
+  transition:all 0.18s;cursor:default;
+}
+.chip:hover{background:rgba(232,200,74,0.15);border-color:rgba(232,200,74,0.5);}
+
+.btn-main{
+  width:100%;padding:13px;border-radius:11px;
+  background:#9B1B30;color:#FFDF00;
+  font-size:13px;font-weight:700;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  letter-spacing:0.06em;
+  transition:all 0.25s cubic-bezier(.22,1,.36,1);
+  border:1px solid rgba(255,223,0,0.2);
+  position:relative;overflow:hidden;
+}
+.btn-main::after{content:'';position:absolute;inset:0;background:rgba(255,223,0,0.08);opacity:0;transition:opacity 0.2s;}
+.btn-main:hover::after{opacity:1;}
+.btn-main:hover{transform:translateY(-2px);background:#b02035;}
+.btn-main:active{transform:translateY(0) scale(0.98);}
+.btn-main.done{background:rgba(45,106,31,0.8);color:#D4F4B0;border-color:rgba(212,244,176,0.2);}
+
+.btn-wish{
+  width:100%;padding:11px;border-radius:11px;
+  background:transparent;color:rgba(232,200,74,0.8);
+  font-size:12px;font-weight:600;
+  border:1px solid rgba(232,200,74,0.25);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  transition:all 0.22s cubic-bezier(.22,1,.36,1);
+}
+.btn-wish:hover{background:rgba(155,27,48,0.2);border-color:rgba(155,27,48,0.5);color:#E8C84A;transform:translateY(-1px);}
+
+.trust-row{display:flex;gap:8px;}
+.trust-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;
+  padding:8px 4px;border-radius:10px;
+  border:1px solid rgba(232,200,74,0.1);
+  background:rgba(255,255,255,0.02);
+  transition:all 0.22s;cursor:default;
+}
+.trust-item:hover{background:rgba(155,27,48,0.15);border-color:rgba(232,200,74,0.25);transform:translateY(-2px);}
+.trust-icon{color:#E8C84A;font-size:18px;}
+.trust-lbl{font-size:8px;color:rgba(255,255,255,0.45);font-weight:600;line-height:1.3;}
+
+/* BUG FIX 3: Saffron product toast renamed to saf-toast to avoid id="toast" duplicate */
+.saf-toast{
+  display:none;background:rgba(45,106,31,0.9);color:#D4F4B0;
+  padding:10px 16px;border-radius:10px;font-size:11px;font-weight:700;
+  align-items:center;gap:7px;margin-top:4px;
+  border:1px solid rgba(212,244,176,0.2);
+  animation:fadeSlideIn 0.4s cubic-bezier(.22,1,.36,1);
+}
+.saf-toast.show{display:flex;}
+
+@media (max-width: 768px) {
+  .wrap { padding: 32px 12px 20px; }
+}
+
+@media (max-width: 500px) {
+  .wrap { padding: 24px 10px 16px; }
+}
+@media(max-width:500px){
+  .pc{grid-template-columns:1fr;}
+  .img-side{min-height:200px;}
+}
+</style>
+
+<style>
+@keyframes hxFadeUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+@keyframes hxFadeLeft{from{opacity:0;transform:translateX(-32px)}to{opacity:1;transform:translateX(0)}}
+@keyframes hxFadeRight{from{opacity:0;transform:translateX(32px)}to{opacity:1;transform:translateX(0)}}
+@keyframes hxFloatJar{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-12px) rotate(1deg)}}
+@keyframes hxShimmer{0%{opacity:0.3;transform:scale(0.95)}50%{opacity:0.6;transform:scale(1.05)}100%{opacity:0.3;transform:scale(0.95)}}
+@keyframes hxPulseRing{0%{transform:scale(1);opacity:0.5}100%{transform:scale(1.6);opacity:0}}
+@keyframes hxBadgePop{0%{transform:scale(0.7);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+@keyframes hxStarIn{from{opacity:0;letter-spacing:-4px}to{opacity:1;letter-spacing:0}}
+@keyframes hxPriceCount{from{opacity:0;transform:scale(0.85)}to{opacity:1;transform:scale(1)}}
+@keyframes hxGlowPulse{0%,100%{box-shadow:0 0 0 0 #E8C84A00}50%{box-shadow:0 0 18px 4px #E8C84A22}}
+
+.hx-anim-left { animation: hxFadeLeft 0.7s cubic-bezier(.22,.68,0,1.2) both; }
+.hx-anim-right { animation: hxFadeRight 0.7s cubic-bezier(.22,.68,0,1.2) both; }
+.hx-anim-up { animation: hxFadeUp 0.6s cubic-bezier(.22,.68,0,1.2) both; }
+.hx-d1{animation-delay:.05s}.hx-d2{animation-delay:.15s}.hx-d3{animation-delay:.25s}
+.hx-d4{animation-delay:.35s}.hx-d5{animation-delay:.45s}.hx-d6{animation-delay:.55s}
+.hx-d7{animation-delay:.65s}.hx-d8{animation-delay:.75s}
+
+.hx-sec {
+  padding: 3rem 2rem;
+  background: linear-gradient(135deg,#0d0000 0%,#1a0006 40%,#0a0005 70%,#1a0800 100%);
+  border-radius: 20px;
+  border: 1px solid #9B1B3033;
+  overflow: hidden;
+  position: relative;
+  font-family: 'Inter', sans-serif;
+}
+.hx-sec::before {
+  content:''; position:absolute; top:-80px; right:-80px;
+  width:300px; height:300px;
+  background:radial-gradient(circle,#9B1B3022 0%,transparent 70%);
+  pointer-events:none;
+}
+.hx-sec::after {
+  content:''; position:absolute; bottom:-60px; left:-60px;
+  width:220px; height:220px;
+  background:radial-gradient(circle,#E8C84A0d 0%,transparent 70%);
+  pointer-events:none;
+}
+
+.hx-badge-lux {
+  background:#E8C84A; color:#1a0006;
+  font-size:10px; font-weight:600; letter-spacing:2px; text-transform:uppercase;
+  padding:4px 14px; border-radius:20px; display:inline-block;
+  animation:hxBadgePop 0.5s cubic-bezier(.22,.68,0,1.2) both;
+}
+
+.hx-honey-title {
+  font-family:'Playfair Display',serif; font-size:clamp(22px,3vw,30px);
+  font-weight:700; color:#FFDF00; line-height:1.25; margin:10px 0 5px;
+}
+.hx-honey-sub { font-size:12px; color:#b07840; margin-bottom:12px; letter-spacing:0.4px; }
+.hx-star-row { color:#E8C84A; font-size:15px; animation:hxStarIn 0.7s ease both; }
+.hx-divider { border:none; border-top:0.5px solid #9B1B3044; margin:11px 0; }
+
+.hx-price-main {
+  font-size:clamp(22px,3.5vw,28px); font-weight:700; color:#E8C84A;
+  font-family:'Playfair Display',serif; animation:hxPriceCount 0.6s ease both;
+}
+.hx-price-old { font-size:13px; color:#555; text-decoration:line-through; margin-left:6px; }
+.hx-off-badge {
+  font-size:11px; color:#E8C84A; font-weight:600;
+  background:#9B1B30; padding:2px 8px; border-radius:5px; margin-left:6px;
+}
+
+.hx-feat-pill {
+  display:inline-flex; align-items:center; gap:5px;
+  font-size:11px; color:#E8C84A;
+  background:#9B1B3018; border:0.5px solid #9B1B3055;
+  border-radius:20px; padding:4px 11px; margin:2px;
+  transition:all 0.25s; cursor:default;
+}
+.hx-feat-pill:hover { background:#9B1B3044; border-color:#E8C84A66; transform:translateY(-2px); }
+
+.hx-label-sm { font-size:11px; color:#9a7040; text-transform:uppercase; letter-spacing:0.9px; margin-bottom:5px; }
+
+.hx-size-btn {
+  border:1px solid #9B1B3066; background:transparent; border-radius:8px;
+  padding:6px 15px; font-size:12px; color:#c4946a; cursor:pointer;
+  transition:all 0.2s; font-family:'Inter',sans-serif;
+}
+.hx-size-btn.active { background:#9B1B30; color:#E8C84A; border-color:#9B1B30; }
+.hx-size-btn:hover:not(.active) { border-color:#E8C84A; color:#E8C84A; transform:translateY(-2px); }
+
+.hx-qty-btn {
+  width:32px; height:32px; border:1px solid #9B1B3066; background:transparent;
+  border-radius:7px; font-size:17px; color:#E8C84A; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; transition:all 0.2s;
+}
+.hx-qty-btn:hover { background:#9B1B3033; transform:scale(1.1); }
+.hx-qty-val { font-size:15px; font-weight:600; min-width:22px; text-align:center; color:#FFDF00; }
+
+.hx-btn-cart {
+  width:100%; background:#9B1B30; color:#E8C84A; border:none; border-radius:10px;
+  padding:13px 0; font-size:14px; font-weight:500; letter-spacing:0.4px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  font-family:'Inter',sans-serif;
+  transition:all 0.25s; position:relative; overflow:hidden;
+  animation:hxGlowPulse 3s ease-in-out infinite;
+}
+.hx-btn-cart::before {
+  content:''; position:absolute; left:-100%; top:0; width:60%; height:100%;
+  background:linear-gradient(90deg,transparent,#ffffff1a,transparent);
+  transition:left 0.5s;
+}
+.hx-btn-cart:hover::before { left:150%; }
+.hx-btn-cart:hover { background:#b52038; transform:translateY(-2px); box-shadow:0 6px 20px #9B1B3055; }
+.hx-btn-cart:active { transform:translateY(0); }
+
+.hx-btn-buy {
+  width:100%; background:transparent; color:#E8C84A;
+  border:1.5px solid #E8C84A44; border-radius:10px;
+  padding:11px 0; font-size:13px; font-weight:500; cursor:pointer;
+  font-family:'Inter',sans-serif; transition:all 0.25s; margin-top:7px;
+}
+.hx-btn-buy:hover { background:#E8C84A15; border-color:#E8C84A; transform:translateY(-2px); }
+
+/* BUG FIX 4: Honey toast renamed to hx-toast-msg to avoid id="toast" duplicate */
+.hx-toast-msg {
+  display:none; background:#E8C84A; color:#1a0006; font-size:12px; font-weight:600;
+  padding:9px 14px; border-radius:9px; text-align:center; margin-top:8px;
+}
+.hx-toast-msg.show { display:block; animation:hxBadgePop 0.3s ease both; }
+
+.hx-meta-item { display:flex; align-items:center; gap:5px; font-size:11px; color:#9a7040; transition:color 0.2s; }
+.hx-meta-item:hover { color:#E8C84A; }
+
+.hx-img-panel {
+  position:relative; display:flex; align-items:center; justify-content:center;
+  min-height: 300px;
+}
+.hx-img-glow {
+  position:absolute; width:min(280px,80%); height:min(280px,80%); border-radius:50%;
+  background:radial-gradient(circle,#E8C84A18 0%,#9B1B3010 50%,transparent 80%);
+  animation:hxShimmer 3.5s ease-in-out infinite;
+  pointer-events:none;
+}
+.hx-img-ring {
+  position:absolute; width:min(260px,75%); height:min(260px,75%); border-radius:50%;
+  border:1px solid #E8C84A22;
+  animation:hxPulseRing 2.5s ease-out infinite;
+  pointer-events:none;
+}
+.hx-img-ring2 {
+  position:absolute; width:min(260px,75%); height:min(260px,75%); border-radius:50%;
+  border:1px solid #9B1B3033;
+  animation:hxPulseRing 2.5s ease-out infinite 1.2s;
+  pointer-events:none;
+}
+
+.hx-img-wrap {
+  position:relative;
+  width: min(420px, 90%);
+  aspect-ratio: 1 / 1;
+  background:linear-gradient(145deg,#1a0800,#2a0f00 50%,#1a0006);
+  border-radius:16px; border:1px solid #E8C84A22;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+  animation:hxFloatJar 4s ease-in-out infinite;
+  transition:box-shadow 0.3s;
+  z-index: 1;
+}
+.hx-img-wrap:hover { box-shadow:0 0 30px #E8C84A22, 0 0 60px #9B1B3022; }
+
+.hx-product-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  border-radius: 14px;
+}
+
+.hx-tag-float {
+  position:absolute; top:10px; right:10px;
+  background:#9B1B30; color:#E8C84A;
+  font-size:10px; font-weight:600; padding:4px 10px; border-radius:6px;
+  letter-spacing:0.5px; z-index:2;
+  animation:hxBadgePop 0.5s ease both 0.8s;
+}
+
+@media (max-width: 767.98px) {
+  .hx-img-col { order: -1; }
+  .hx-img-wrap { width: min(300px, 85vw); }
+  .hx-honey-title { font-size: 22px; }
+  .hx-price-main { font-size: 22px; }
+  .hx-sec { padding: 1.4rem 1rem; }
+  .hx-img-panel { min-height: 240px; margin-bottom: 1rem; }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .hx-img-wrap { width: min(340px, 85%); }
+  .hx-honey-title { font-size: 24px; }
+}
+
+@media (min-width: 1200px) {
+  .hx-img-wrap { width: min(460px, 90%); }
+}
+</style>
+<style>
+@keyframes hxFadeUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+@keyframes hxFadeLeft{from{opacity:0;transform:translateX(-32px)}to{opacity:1;transform:translateX(0)}}
+@keyframes hxFadeRight{from{opacity:0;transform:translateX(32px)}to{opacity:1;transform:translateX(0)}}
+@keyframes hxFloatJar{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-12px) rotate(1deg)}}
+@keyframes hxShimmer{0%{opacity:0.3;transform:scale(0.95)}50%{opacity:0.6;transform:scale(1.05)}100%{opacity:0.3;transform:scale(0.95)}}
+@keyframes hxPulseRing{0%{transform:scale(1);opacity:0.5}100%{transform:scale(1.6);opacity:0}}
+@keyframes hxBadgePop{0%{transform:scale(0.7);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+@keyframes hxStarIn{from{opacity:0;letter-spacing:-4px}to{opacity:1;letter-spacing:0}}
+@keyframes hxPriceCount{from{opacity:0;transform:scale(0.85)}to{opacity:1;transform:scale(1)}}
+@keyframes hxGlowPulse{0%,100%{box-shadow:0 0 0 0 #E8C84A00}50%{box-shadow:0 0 18px 4px #E8C84A22}}
+</style>
+</head>
+<body>
+
+<!-- ══ TOP BAR ══ -->
+<div class="tb">
+  <div class="tb__inner">
+    <div class="tb__marquee">
+    <span class="tb__msg">
+  🌿 Chào mừng đến Bảo Vy – Thiên Nhiên Thuần Khiết Cho Bạn! &nbsp;&nbsp;&nbsp; ✦ &nbsp;&nbsp;&nbsp;
+  Miễn phí vận chuyển cho đơn hàng từ 500.000₫ trở lên &nbsp;&nbsp;&nbsp; ✦ &nbsp;&nbsp;&nbsp;
+  Bộ sưu tập thảo mộc hữu cơ cao cấp — Mua ngay hôm nay &nbsp;&nbsp;&nbsp; ✦ &nbsp;&nbsp;&nbsp;
+  🎁 Quà tặng đặc biệt cho đơn hàng trên 1.200.000₫ &nbsp;&nbsp;&nbsp; ✦ &nbsp;&nbsp;&nbsp;
+  Sản phẩm thiên nhiên 100% — Không hóa chất độc hại &nbsp;&nbsp;&nbsp; ✦ &nbsp;&nbsp;&nbsp;
+  📦 Giao hàng toàn quốc trong 24 giờ &nbsp;&nbsp;&nbsp; ✦ &nbsp;&nbsp;&nbsp;
+  🌸 Combo chăm sóc da cao cấp từ 2.500.000₫ — Tiết kiệm 30%
+</span>
+    </div>
+    <div class="tb__socials">
+      <a href="#" class="tb__scell" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+      <a href="#" class="tb__scell" aria-label="Twitter/X"><i class="bi bi-twitter-x"></i></a>
+      <a href="#" class="tb__scell" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+      <a href="#" class="tb__scell" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+    </div>
+  </div>
+</div>
+
+<!-- ══ NAVBAR ══ -->
+<div class="nb" id="mainNav">
+  <a href="#" class="nb__brand">
+    <div class="nb__logo"><i class="bi bi-flower1"></i></div>
+    <span class="nb__name">Bảo Vy</span>
+  </a>
+
+  <nav class="nb__pill" aria-label="Main navigation">
+    <ul class="nb__list">
+      <li><a href="#" class="nb--active">Home</a></li>
+      <li><span class="nb__sep">&#9670;</span></li>
+      <li><a href="#">Pages</a></li>
+      <li><span class="nb__sep">&#9670;</span></li>
+      <li><a href="#">Services</a></li>
+      <li><span class="nb__sep">&#9670;</span></li>
+      <li><a href="#">Portfolio</a></li>
+      <li><span class="nb__sep">&#9670;</span></li>
+      <li><a href="#">Shop</a></li>
+      <li><span class="nb__sep">&#9670;</span></li>
+      <li><a href="#">Blog</a></li>
+    </ul>
+  </nav>
+
+  <button class="nb__toggler" id="nbToggler" aria-label="Toggle menu" aria-expanded="false">
+    <span class="nb__bar"></span>
+    <span class="nb__bar"></span>
+    <span class="nb__bar"></span>
+  </button>
+</div>
+
+<!-- Mobile Menu — separate from navbar so it doesn't push nav content -->
+<div class="nb__mobile" id="nbMobile" aria-hidden="true">
+  <a href="#" class="nb--active"><i class="bi bi-house-door"></i> Home</a>
+  <div class="nb__msep"></div>
+  <a href="#"><i class="bi bi-file-text"></i> Pages</a>
+  <a href="#"><i class="bi bi-briefcase"></i> Services</a>
+  <a href="#"><i class="bi bi-grid-3x3-gap"></i> Portfolio</a>
+  <div class="nb__msep"></div>
+  <a href="#"><i class="bi bi-bag"></i> Shop</a>
+  <a href="#"><i class="bi bi-journal-richtext"></i> Blog</a>
+</div>
+
+<!-- ══ HERO ══ -->
+<div class="hr" id="heroWrapper">
+
+  <!-- Slide backgrounds -->
+  <div class="hr__bg hr__bg-1 hr--active" id="hrBg0"></div>
+  <div class="hr__bg hr__bg-2"            id="hrBg1"></div>
+  <div class="hr__bg hr__bg-3"            id="hrBg2"></div>
+
+  <!-- Text content -->
+  <div class="hr__content">
+    <div class="hr__badge">
+      <span class="hr__bdot"></span>
+      <span id="hrBadgeTxt">Premium Collection</span>
+      <span class="hr__bdot"></span>
+    </div>
+    <h1 class="hr__heading" id="hrHeading">Let us bring life<br>to your Garden</h1>
+    <p  class="hr__sub"     id="hrSub">Where Full Service Landscape Management have been our passion since 1979 and providing customer satisfaction is our goal and guarantee!</p>
+    <a href="#" class="hr__cta"><span>Contact Us</span><i class="bi bi-send"></i></a>
+  </div>
+
+  <!-- Navigation arrows — IDs scoped with hr prefix -->
+  <button class="hr__arrow hr__arrow--prev" id="heroPrevBtn" aria-label="Previous slide">
+    <i class="bi bi-chevron-left"></i>
+  </button>
+  <button class="hr__arrow hr__arrow--next" id="heroNextBtn" aria-label="Next slide">
+    <i class="bi bi-chevron-right"></i>
+  </button>
+
+  <!-- Dots — class .hr__dot, no clash -->
+  <div class="hr__dots" id="hrDots">
+    <button class="hr__dot hr--active" data-idx="0" aria-label="Slide 1"></button>
+    <button class="hr__dot"            data-idx="1" aria-label="Slide 2"></button>
+    <button class="hr__dot"            data-idx="2" aria-label="Slide 3"></button>
+  </div>
+
+  <!-- Slide counter -->
+  <div class="hr__counter">
+    <span id="hrCurr">01</span> / <span id="hrTotal">03</span>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="hr__progress">
+    <div class="hr__progress-fill" id="hrProgFill"></div>
+  </div>
+</div>
+
+<main>
+  <div class="wrap animate-left">
+    <div class="pc">
+      <div class="img-side">
+        <span class="badge-premium">Grade A+</span>
+        <span class="badge-vn">★ Vietnam No.1</span>
+        <img src="🍁🌺.webp" alt="Premium Saffron strands"/>
+        <div class="img-grad"></div>
+        <div class="img-bottom">
+          <div class="img-bottom-icon">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9B1B30" stroke-width="2.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="img-bottom-text">Certified Authentic · ISO 3632 Grade A+</div>
+        </div>
+      </div>
+
+      <div class="info">
+        <div>
+          <div class="brand-row"><div class="brand-dot"></div><div class="brand-name">Zafran House Vietnam</div></div>
+          <div class="prod-title">Premium Kashmiri<br>Saffron — Nhụy Hoa Nghệ Tây</div>
+          <div class="prod-sub">Finest hand-picked strands • Pure & unadulterated</div>
+        </div>
+
+        <div class="rating-row">
+          <div class="stars-fill">
+            <svg class="star" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+            <svg class="star" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+            <svg class="star" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+            <svg class="star" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+            <svg class="star" viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+          </div>
+          <span class="rating-num">4.9</span>
+          <span class="rating-count">· 3,241 đánh giá</span>
+        </div>
+
+        <div class="price-block">
+          <div class="price-top">
+            <span class="price-now" id="priceNow">1.290.000 ₫</span>
+            <span class="price-was" id="priceWas">1.720.000 ₫</span>
+            <span class="price-tag" id="priceSave">25% OFF</span>
+          </div>
+          <div class="price-note">Free shipping · Delivered in 2–3 days across Vietnam</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div>
+          <div class="sec-label">Select Weight</div>
+          <div class="weight-grid" id="wg">
+            <button class="wbtn on" data-p="1290000" data-o="1720000" data-s="25" onclick="selW(this)">1g</button>
+            <button class="wbtn" data-p="2450000" data-o="3200000" data-s="23" onclick="selW(this)">2g</button>
+            <button class="wbtn" data-p="5800000" data-o="7500000" data-s="23" onclick="selW(this)">5g</button>
+            <button class="wbtn" data-p="10900000" data-o="14000000" data-s="22" onclick="selW(this)">10g</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="sec-label">Quantity</div>
+          <div class="qty-row">
+            <div class="qctrl">
+              <button class="qbtn" onclick="chQ(-1)">−</button>
+              <div class="qnum" id="qn">1</div>
+              <button class="qbtn" onclick="chQ(1)">+</button>
+            </div>
+            <span class="stock-txt">⚡ Only 36 left in stock</span>
+          </div>
+        </div>
+
+        <div class="chips">
+          <span class="chip">100% Organic</span>
+          <span class="chip">Lab Certified</span>
+          <span class="chip">Free Return 7d</span>
+          <span class="chip">COD Available</span>
+        </div>
+
+        <button class="btn-main" id="cartBtn" onclick="addSafCart()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          Add to Cart
+        </button>
+
+        <button class="btn-wish" onclick="toggleWish(this)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span>Save to Wishlist</span>
+        </button>
+
+        <div class="trust-row">
+          <div class="trust-item">
+            <i class="bi bi-shield-check trust-icon"></i>
+            <div class="trust-lbl">100%<br>Authentic</div>
+          </div>
+          <div class="trust-item">
+            <i class="bi bi-truck trust-icon"></i>
+            <div class="trust-lbl">Fast<br>Delivery</div>
+          </div>
+          <div class="trust-item">
+            <i class="bi bi-arrow-repeat trust-icon"></i>
+            <div class="trust-lbl">7-Day<br>Return</div>
+          </div>
+          <div class="trust-item">
+            <i class="bi bi-headset trust-icon"></i>
+            <div class="trust-lbl">24/7<br>Support</div>
+          </div>
+        </div>
+
+        <!-- BUG FIX 3: id changed from "toast" to "safToast" -->
+        <div class="saf-toast" id="safToast">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Successfully added to your cart!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid px-0">
+    <div class="hx-sec">
+      <div class="row g-4 align-items-center">
+        <div class="col-12 col-md-6 col-lg-5">
+          <div class="hx-info-panel">
+            <div class="hx-anim-left hx-d1">
+              <span class="hx-badge-lux">✦ Artisan Reserve</span>
+            </div>
+            <h1 class="hx-honey-title hx-anim-left hx-d2">Royal Sidr<br>Luxury Honey</h1>
+            <p class="hx-honey-sub hx-anim-left hx-d3">Wild Harvested · Cold Extracted · Yemen Origin</p>
+            <div class="hx-star-row hx-anim-left hx-d3">
+              ★★★★★
+              <span style="font-size:12px;color:#9a7040;margin-left:5px;">4.9 &nbsp;(218 reviews)</span>
+            </div>
+            <hr class="hx-divider hx-anim-up hx-d3">
+            <div class="hx-anim-up hx-d4 mb-3">
+              <span class="hx-price-main">1.890.000 ₫</span>
+              <span class="hx-price-old">2.400.000 ₫</span>
+              <span class="hx-off-badge">22% OFF</span>
+              <br>
+              <span style="font-size:11px;color:#666;">VAT included</span>
+            </div>
+            <div class="hx-anim-up hx-d4 mb-3">
+              <span class="hx-feat-pill">🌿 100% Raw</span>
+              <span class="hx-feat-pill">🧪 Lab Certified</span>
+              <span class="hx-feat-pill">🚫 No Additives</span>
+            </div>
+            <div class="hx-anim-up hx-d5 mb-3">
+              <p class="hx-label-sm">Size</p>
+              <div class="d-flex flex-wrap gap-2">
+                <button class="hx-size-btn active" onclick="selSize(this)">250g</button>
+                <button class="hx-size-btn" onclick="selSize(this)">500g</button>
+                <button class="hx-size-btn" onclick="selSize(this)">1 kg</button>
+              </div>
+            </div>
+            <hr class="hx-divider">
+            <div class="hx-anim-up hx-d5 d-flex align-items-center gap-3 mb-3">
+              <p class="hx-label-sm m-0">Qty</p>
+              <div class="d-flex align-items-center gap-2">
+                <button class="hx-qty-btn" onclick="chQty(-1)">−</button>
+                <span class="hx-qty-val" id="hxQty">1</span>
+                <button class="hx-qty-btn" onclick="chQty(1)">+</button>
+              </div>
+              <span class="ms-auto" style="font-size:11px;color:#4caf50;">● In Stock</span>
+            </div>
+            <div class="hx-anim-up hx-d6 mb-2">
+              <button class="hx-btn-cart" onclick="addHoneyCart()">🛒 Add to Cart</button>
+            </div>
+            <div class="hx-anim-up hx-d7">
+              <button class="hx-btn-buy">⚡ Buy Now</button>
+            </div>
+            <!-- BUG FIX 4: id changed from "toast" to "hxToast" -->
+            <div class="hx-toast-msg" id="hxToast" role="status">✓ Added to your cart!</div>
+            <div class="hx-anim-up hx-d8 d-flex flex-wrap gap-3 mt-3">
+              <span class="hx-meta-item">🚚 Free ship 500k+</span>
+              <span class="hx-meta-item">🛡 Authentic</span>
+              <span class="hx-meta-item">🔄 7-day return</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-7 hx-img-col">
+          <div class="hx-img-panel hx-anim-right hx-d2">
+            <div class="hx-img-glow"></div>
+            <div class="hx-img-ring"></div>
+            <div class="hx-img-ring2"></div>
+            <div class="hx-img-wrap">
+              <img src="Honey.webp" alt="Royal Sidr Luxury Honey" class="hx-product-img">
+              <div class="hx-tag-float">PREMIUM</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="perfume-section">
+    <div class="cart-toast" id="cartToast"></div>
+    <div class="container-lg">
+      <div class="text-center mb-4">
+        <p class="section-eyebrow">Maison de Parfum</p>
+        <h2 class="section-title">The Art of <span>Luxury</span><br>Fragrance</h2>
+        <div class="gold-divider"></div>
+        <p class="section-subtitle">Curated Signatures · Rare Essences</p>
+      </div>
+
+      <div class="row g-3 align-items-stretch mb-4">
+        <div class="col-12 col-md-4 col-lg-3">
+          <div class="hero-image-slot">
+            <img src="perfume.webp" alt="Signature Luxury Perfume" loading="lazy">
+            <div class="hero-badge">Featured</div>
+            <div class="hero-overlay">
+              <div class="hero-name">Oud Royale<br><em style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:0.9rem;color:rgba(245,233,208,0.7);">Noir Collection</em></div>
+              <div class="hero-price">PKR 18,500 · 100ml</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-8 col-lg-9">
+          <!-- BUG FIX 5: Renamed to perfPrevBtn / perfNextBtn to avoid clash with hero carousel -->
+          <div class="carousel-nav">
+            <button class="nav-btn" id="perfPrevBtn" aria-label="Previous">&#8592;</button>
+            <button class="nav-btn" id="perfNextBtn" aria-label="Next">&#8594;</button>
+          </div>
+          <div class="carousel-outer">
+            <div class="carousel-track-wrap">
+              <div class="carousel-track" id="carouselTrack">
+
+                <div class="perfume-card">
+                  <div class="card-image-wrap">
+                    <img src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=400&q=80" alt="Velvet Noir" loading="lazy">
+                    <span class="card-tag">Bestseller</span>
+                    <button class="card-wishlist" aria-label="Wishlist">♡</button>
+                  </div>
+                  <div class="card-body-inner">
+                    <p class="card-brand">Amouage</p>
+                    <p class="card-name">Velvet Noir</p>
+                    <p class="card-notes">Rose · Oud · Amber</p>
+                    <div class="card-footer-row">
+                      <div class="card-price">PKR 22,000<small>100ml EDP</small></div>
+                      <button class="btn-add-cart" onclick="addToCart(this,'Velvet Noir')">+ Cart</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="perfume-card">
+                  <div class="card-image-wrap">
+                    <img src="https://images.unsplash.com/photo-1587017539504-67cfbddac569?w=400&q=80" alt="Golden Iris" loading="lazy">
+                    <span class="card-tag">New</span>
+                    <button class="card-wishlist" aria-label="Wishlist">♡</button>
+                  </div>
+                  <div class="card-body-inner">
+                    <p class="card-brand">Tom Ford</p>
+                    <p class="card-name">Golden Iris</p>
+                    <p class="card-notes">Iris · Musk · Sandalwood</p>
+                    <div class="card-footer-row">
+                      <div class="card-price">PKR 28,500<small>50ml EDP</small></div>
+                      <button class="btn-add-cart" onclick="addToCart(this,'Golden Iris')">+ Cart</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="perfume-card">
+                  <div class="card-image-wrap">
+                    <img src="download (7).webp" alt="Sable Royale" loading="lazy">
+                    <span class="card-tag">Limited</span>
+                    <button class="card-wishlist" aria-label="Wishlist">♡</button>
+                  </div>
+                  <div class="card-body-inner">
+                    <p class="card-brand">Creed</p>
+                    <p class="card-name">Sable Royale</p>
+                    <p class="card-notes">Vanilla · Vetiver · Cedar</p>
+                    <div class="card-footer-row">
+                      <div class="card-price">PKR 35,000<small>75ml EDP</small></div>
+                      <button class="btn-add-cart" onclick="addToCart(this,'Sable Royale')">+ Cart</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="perfume-card">
+                  <div class="card-image-wrap">
+                    <img src="Have You Tried Layering Scents Like This Yet_.jfif" alt="Crimson Oud" loading="lazy">
+                    <span class="card-tag">Exclusive</span>
+                    <button class="card-wishlist" aria-label="Wishlist">♡</button>
+                  </div>
+                  <div class="card-body-inner">
+                    <p class="card-brand">Xerjoff</p>
+                    <p class="card-name">Crimson Oud</p>
+                    <p class="card-notes">Oud · Leather · Saffron</p>
+                    <div class="card-footer-row">
+                      <div class="card-price">PKR 42,000<small>100ml EDP</small></div>
+                      <button class="btn-add-cart" onclick="addToCart(this,'Crimson Oud')">+ Cart</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="perfume-card">
+                  <div class="card-image-wrap">
+                    <img src="download (6).webp" alt="Jasmin Minuit" loading="lazy">
+                    <span class="card-tag">Popular</span>
+                    <button class="card-wishlist" aria-label="Wishlist">♡</button>
+                  </div>
+                  <div class="card-body-inner">
+                    <p class="card-brand">Dior</p>
+                    <p class="card-name">Jasmin Minuit</p>
+                    <p class="card-notes">Jasmine · White Tea · Lily</p>
+                    <div class="card-footer-row">
+                      <div class="card-price">PKR 19,500<small>75ml EDP</small></div>
+                      <button class="btn-add-cart" onclick="addToCart(this,'Jasmin Minuit')">+ Cart</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="perfume-card">
+                  <div class="card-image-wrap">
+                    <img src="https://images.unsplash.com/photo-1590736704728-f4730bb30770?w=400&q=80" alt="Ambra Nera" loading="lazy">
+                    <span class="card-tag">Rare</span>
+                    <button class="card-wishlist" aria-label="Wishlist">♡</button>
+                  </div>
+                  <div class="card-body-inner">
+                    <p class="card-brand">Acqua di Parma</p>
+                    <p class="card-name">Ambra Nera</p>
+                    <p class="card-notes">Amber · Bergamot · Patchouli</p>
+                    <div class="card-footer-row">
+                      <div class="card-price">PKR 31,000<small>100ml EDP</small></div>
+                      <button class="btn-add-cart" onclick="addToCart(this,'Ambra Nera')">+ Cart</button>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="auto-progress">
+            <div class="auto-progress-fill" id="progressFill"></div>
+          </div>
+          <div class="carousel-dots" id="carouselDots"></div>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <a href="#" class="btn-view-all">Explore Full Collection</a>
+      </div>
+    </div>
+    <div class="bottom-accent"></div>
+  </section>
+
+  <!-- BUG FIX 2: cartToast div added to HTML (was used in JS but never existed in DOM) -->
+  <div class="cart-toast" id="cartToast"></div>
+
+  <section id="about">
+    <svg class="thread-svg" viewBox="0 0 60 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M30 0 Q55 75 10 150 Q-5 225 30 300" stroke="#FFDF00" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="30" cy="0"   r="4" fill="#9B1B30"/>
+      <circle cx="10" cy="150" r="3" fill="#E8C84A"/>
+      <circle cx="30" cy="300" r="4" fill="#9B1B30"/>
+    </svg>
+
+    <div class="container position-relative" style="z-index:1;">
+      <div class="row align-items-center gy-5">
+        <div class="col-lg-6">
+          <p class="section-label mb-3" id="lbl">— Our Story</p>
+          <div class="section-line mb-3" id="line"></div>
+          <h2 class="about-heading mb-3" id="heading">
+            The World's Most<br/>
+            <em>Precious Spice,</em><br/>
+            Delivered Pure
+          </h2>
+          <p class="about-body mb-2" id="body1">
+            Zafran has been synonymous with excellence since our founding. We source only 
+            <strong style="color:var(--amber);">Grade A+ Super Negin</strong> saffron threads — hand-harvested 
+            at dawn from the finest Crocus sativus flowers, where each single gram demands 
+            the careful work of thousands of blossoms.
+          </p>
+          <p class="about-body mb-2" id="body2">
+            Our heavy-quality zafran carries a deep crimson hue, an intense floral aroma, 
+            and an exceptionally high crocin content — certified to ISO 3632 international 
+            purity standards. From your kitchen to your table, we guarantee nothing less than perfection.
+          </p>
+          <div class="d-flex flex-wrap gap-2 mb-4">
+            <span class="feature-pill fp"><span class="dot"></span>ISO 3632 Certified</span>
+            <span class="feature-pill fp"><span class="dot"></span>Hand-Harvested</span>
+            <span class="feature-pill fp"><span class="dot"></span>Grade A+ Super Negin</span>
+            <span class="feature-pill fp"><span class="dot"></span>100% Pure Threads</span>
+          </div>
+          <a href="#" class="btn-zafran" id="cta"><span>Discover Our Zafran</span></a>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="row g-3">
+            <div class="col-8">
+              <div class="img-wrap" id="img1">
+                <span class="img-badge">Premium Quality</span>
+                <img src="download (3).webp" alt="Premium Saffron Threads"/>
+              </div>
+            </div>
+            <div class="col-4 d-flex flex-column gap-3">
+              <div class="img-wrap" id="img2" style="margin-top:40px;">
+                <img src="download (4).webp" alt="Saffron Spice Bowl" style="height:135px;"/>
+              </div>
+              <div class="img-wrap" id="img3">
+                <img src="download (1).webp" alt="Saffron Harvest" style="height:135px;"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gold-divider" id="divider"></div>
+
+      <div class="row g-3 justify-content-center">
+        <div class="col-6 col-md-3">
+          <div class="stat-card sc">
+            <div class="stat-number">15+</div>
+            <div class="stat-label">Years of Trust</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-card sc">
+            <div class="stat-number">A+</div>
+            <div class="stat-label">Grade Super Negin</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-card sc">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Pure & Authentic</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-card sc">
+            <div class="stat-number">ISO</div>
+            <div class="stat-label">3632 Certified</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="zaf-about">
+    <div class="zaf-watermark" id="zaf-wm">ZAFRAN</div>
+    <div class="zaf-vert-label" id="zaf-vlbl">Pure Collection</div>
+    <div class="zaf-scent-circle" id="zaf-sc-circle"></div>
+
+    <div class="container position-relative" style="z-index:1; padding-left: 50px;">
+      <div class="row align-items-center gy-4">
+        <div class="col-lg-5">
+          <div class="zaf-img-stack" id="zaf-imgStack">
+            <div class="zaf-img-card zaf-main" id="zaf-imgMain">
+              <span class="zaf-img-badge">Premium Quality</span>
+              <img src="perfume.webp" alt="Luxury Perfume Bottle" />
+            </div>
+            <div class="zaf-img-card zaf-side-top" id="zaf-imgSideTop">
+              <img src="photo-1592945403244-b3fbafd7f539.webp" alt="Premium Fragrance" />
+            </div>
+            <div class="zaf-img-card zaf-side-bot" id="zaf-imgSideBot">
+              <img src="photo-1588405748880-12d1d2a59f75.webp" alt="Attar Perfume" />
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-7">
+          <div class="zaf-content-col">
+            <div class="zaf-ornament" id="zaf-orn">
+              <span class="zaf-orn-line"></span>
+              <span class="zaf-orn-diamond"></span>
+              <span class="zaf-orn-text">Est. Since 2008 &nbsp;·&nbsp; Vietnam</span>
+            </div>
+            <h2 class="zaf-about-heading" id="zaf-aHead">
+              Where Fragrance<br/>
+              Becomes <span class="zaf-highlight">Royalty</span>
+            </h2>
+            <p class="zaf-about-sub" id="zaf-aSub">The Art of Luxury Scent</p>
+            <div class="zaf-hr-fancy" id="zaf-hr">
+              <span></span><i>✦</i><span></span>
+            </div>
+            <p class="zaf-about-body" id="zaf-aBody1">
+              We carry only the most <strong>exclusive luxury and royal fragrances</strong> — 
+              rare attars, heavy oud blends, and signature perfumes sourced from the finest 
+              houses of Arabia, France, and the Orient.
+            </p>
+            <p class="zaf-about-body" id="zaf-aBody2">
+              From <strong>pure saffron-infused royal attars</strong> to bold oud-based compositions, 
+              our collection is curated for connoisseurs who wear their fragrance as a statement of prestige.
+            </p>
+            <div class="zaf-royal-tags">
+              <span class="zaf-rtag zaf-gold zaf-rt">Royal Oud</span>
+              <span class="zaf-rtag zaf-red zaf-rt">Pure Attar</span>
+              <span class="zaf-rtag zaf-amber zaf-rt">Saffron Blends</span>
+              <span class="zaf-rtag zaf-gold zaf-rt">French Niche</span>
+              <span class="zaf-rtag zaf-red zaf-rt">Arabic Perfumes</span>
+              <span class="zaf-rtag zaf-amber zaf-rt">Long-Lasting</span>
+            </div>
+            <div class="zaf-stat-row" id="zaf-statRow">
+              <div class="zaf-stat-item"><div class="zaf-stat-num">200+</div><div class="zaf-stat-lbl">Fragrances</div></div>
+              <div class="zaf-stat-item"><div class="zaf-stat-num">15+</div><div class="zaf-stat-lbl">Years Legacy</div></div>
+              <div class="zaf-stat-item"><div class="zaf-stat-num">100%</div><div class="zaf-stat-lbl">Authentic</div></div>
+              <div class="zaf-stat-item"><div class="zaf-stat-num">Royal</div><div class="zaf-stat-lbl">Grade Only</div></div>
+            </div>
+            <div class="zaf-cta-row" id="zaf-ctaRow">
+              <a href="#" class="zaf-btn-royal"><span>Explore Collection</span></a>
+              <a href="#" class="zaf-btn-ghost">Our Story →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="hon-about">
+    <div class="hon-watermark" id="hon-wm">NECTAR</div>
+    <div class="hon-vert-label" id="hon-vlbl">Golden Reserve</div>
+    <div class="hon-scent-circle" id="hon-sc-circle"></div>
+
+    <div class="container position-relative" style="z-index:1; padding-left: 50px;">
+      <div class="row align-items-center gy-4">
+        <div class="col-lg-5">
+          <div class="hon-img-stack" id="hon-imgStack">
+            <div class="hon-img-card hon-main" id="hon-imgMain">
+              <span class="hon-img-badge">Raw · Unfiltered</span>
+              <img src="download (5).webp" alt="Luxury Honey Jar" />
+            </div>
+            <div class="hon-img-card hon-side-top" id="hon-imgSideTop">
+              <img src="Honeycomb Crunch ASMR 🍽️ Golden Honeycomb Crunch _ Satisfying ASMR Treat.webp" alt="Natural Honeycomb" />
+            </div>
+            <div class="hon-img-card hon-side-bot" id="hon-imgSideBot">
+              <img src="Goldenes Honigglas im Sonnenlicht – Helle Küchenkunst als Digitalprint.webp" alt="Pure Honey Drip" />
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-7">
+          <div class="hon-content-col">
+            <div class="hon-ornament" id="hon-orn">
+              <span class="hon-orn-line"></span>
+              <span class="hon-orn-diamond"></span>
+              <span class="hon-orn-text">Est. Since 2010 &nbsp;·&nbsp; New Zealand</span>
+            </div>
+            <h2 class="hon-about-heading" id="hon-aHead">
+              Nature's Rarest<br/>
+              Gift, <span class="hon-highlight">Perfected</span>
+            </h2>
+            <p class="hon-about-sub" id="hon-aSub">The Art of Liquid Gold</p>
+            <div class="hon-hr-fancy" id="hon-hr">
+              <span></span><i>✦</i><span></span>
+            </div>
+            <p class="hon-about-body" id="hon-aBody1">
+              We source only the world's most <strong>exclusive luxury honey</strong> — 
+              rare Sidr from Yemen's ancient valleys, wild Manuka from New Zealand's pristine highlands, 
+              and cold-extracted mountain honeys untouched by modern processing.
+            </p>
+            <p class="hon-about-body" id="hon-aBody2">
+              Our <strong>high-grade Royal Reserve collection</strong> carries exceptional MGO 
+              potency, a deep amber richness, and a velvety texture — lab-certified for purity, 
+              hand-harvested at peak bloom.
+            </p>
+            <div class="hon-royal-tags">
+              <span class="hon-rtag hon-gold hon-rt">Sidr Honey</span>
+              <span class="hon-rtag hon-red hon-rt">Raw Manuka</span>
+              <span class="hon-rtag hon-amber hon-rt">Wild Mountain</span>
+              <span class="hon-rtag hon-gold hon-rt">MGO Certified</span>
+              <span class="hon-rtag hon-red hon-rt">Cold Extracted</span>
+              <span class="hon-rtag hon-amber hon-rt">Lab Tested</span>
+            </div>
+            <div class="hon-stat-row" id="hon-statRow">
+              <div class="hon-stat-item"><div class="hon-stat-num">50+</div><div class="hon-stat-lbl">Rare Varieties</div></div>
+              <div class="hon-stat-item"><div class="hon-stat-num">15+</div><div class="hon-stat-lbl">Years Legacy</div></div>
+              <div class="hon-stat-item"><div class="hon-stat-num">100%</div><div class="hon-stat-lbl">Pure & Raw</div></div>
+              <div class="hon-stat-item"><div class="hon-stat-num">Gold</div><div class="hon-stat-lbl">Grade Only</div></div>
+            </div>
+            <div class="hon-cta-row" id="hon-ctaRow">
+              <a href="#" class="hon-btn-royal"><span>Explore Collection</span></a>
+              <a href="#" class="hon-btn-ghost">Our Story →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="ft">
+  <div class="ft-top mt-2">
+    <p><i class="bi bi-stars me-2"></i>Chào mừng đến với Bảo Vy — Thiên nhiên chăm sóc cho bạn<i class="bi bi-stars ms-2"></i></p>
+  </div>
+
+  <div class="ft-body">
+    <div class="container">
+      <div class="row gy-4">
+
+        <!-- Brand -->
+        <div class="col-12 col-md-4 col-lg-3">
+          <div class="logo-box">
+            <i class="bi bi-flower2"></i>
+            <span>LOGO HERE</span>
+          </div>
+          <div class="brand">Bảo Vy</div>
+          <div class="brand-sub mb-2">Nature Care for You</div>
+          <p class="desc">Full Service Landscape Management — passion since 1979. Customer satisfaction is our goal & guarantee.</p>
+          <div class="social">
+            <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+            <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+            <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+            <a href="#" aria-label="X"><i class="bi bi-twitter-x"></i></a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="col-6 col-md-2 col-lg-2">
+          <div class="col-head">Pages</div>
+          <ul class="lnks">
+            <li><a href="#"><i class="bi bi-chevron-right"></i>Home</a></li>
+            <li><a href="#"><i class="bi bi-chevron-right"></i>About</a></li>
+            <li><a href="#"><i class="bi bi-chevron-right"></i>Services</a></li>
+            <li><a href="#"><i class="bi bi-chevron-right"></i>Portfolio</a></li>
+            <li><a href="#"><i class="bi bi-chevron-right"></i>Shop</a></li>
+            <li><a href="#"><i class="bi bi-chevron-right"></i>Blog</a></li>
+          </ul>
+        </div>
+
+        <!-- Services -->
+        <div class="col-6 col-md-2 col-lg-2">
+          <div class="col-head">Products</div>
+          <ul class="lnks">
+            <li><a href="#"><i class="bi bi-tree"></i>Zaafran</a></li>
+            <li><a href="#"><i class="bi bi-scissors"></i>Luxury perfumes</a></li>
+            <li><a href="#"><i class="bi bi-flower1"></i>High Quality Honey</a></li>
+            
+          </ul>
+        </div>
+
+        <!-- Contact -->
+        <div class="col-12 col-md-4 col-lg-3">
+          <div class="col-head">Contact</div>
+          <div class="ci">
+            <div class="ci-icon"><i class="bi bi-geo-alt-fill"></i></div>
+            <div class="ci-text"><strong>Address</strong>123 Green Street, Ho Chi Minh City, Vietnam</div>
+          </div>
+          <div class="ci">
+            <div class="ci-icon"><i class="bi bi-telephone-fill"></i></div>
+            <div class="ci-text"><strong>Phone</strong>+84 90 123 4567</div>
+          </div>
+          <div class="ci">
+            <div class="ci-icon"><i class="bi bi-envelope-fill"></i></div>
+            <div class="ci-text"><strong>Email</strong>info@baovy.vn</div>
+          </div>
+          <div class="ci">
+            <div class="ci-icon"><i class="bi bi-clock-fill"></i></div>
+            <div class="ci-text"><strong>Hours</strong>Mon – Sat: 8am – 6pm</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="ft-bottom">
+    <div class="bot-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+      <a href="#">Sitemap</a>
+    </div>
+    <p>© 2025 <span>Bảo Vy</span>. All rights reserved. Made with <span>♥</span> in Vietnam.</p>
+  </div>
+</footer>
+<!-- Slide data -->
+<script>
+const SLIDES = [
+  {
+    badge  : 'Best Gardening in the Town',
+    heading: 'Let us bring life<br>to your Garden',
+    sub    : 'Where Full Service Landscape Management have been our passion since 1979 and providing customer satisfaction is our goal and guarantee!'
+  },
+  {
+    badge  : 'Premium Plant Care',
+    heading: 'Nature is our<br>Greatest inspiration',
+    sub    : "We design, plant and maintain beautiful gardens that transform your outdoor space into a peaceful sanctuary you'll love every single day."
+  },
+  {
+    badge  : 'Service Quality',
+    heading: 'We serve the<br>Best work',
+    sub    : 'We consistently aim to deliver the same reliable prompt professionaly and friendly service synonymous.'
+  }
+];
+</script>
+
+<!-- BUG FIX 6: All three registerPlugin calls merged into ONE — was being called 3 times -->
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+</script>
+
+<!-- Saffron product JS -->
+<script>
+// BUG FIX 3: addSafCart() — renamed from addCart() and uses #safToast
+function addSafCart() {
+  const t = document.getElementById('safToast');
+  t.classList.remove('show');
+  void t.offsetWidth;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+let safQ = 1;
+function chQ(d) {
+  safQ = Math.max(1, safQ + d);
+  document.getElementById('qn').textContent = safQ;
+}
+
+function selW(btn) {
+  document.querySelectorAll('#wg .wbtn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  const fmt = n => Number(n).toLocaleString('vi-VN') + ' ₫';
+  document.getElementById('priceNow').textContent  = fmt(btn.dataset.p);
+  document.getElementById('priceWas').textContent  = fmt(btn.dataset.o);
+  document.getElementById('priceSave').textContent = btn.dataset.s + '% OFF';
+}
+
+function toggleWish(b) {
+  const svg = b.querySelector('svg');
+  const txt = b.querySelector('span');
+  const active = b.dataset.wished === '1';
+  b.dataset.wished = active ? '0' : '1';
+  svg.style.fill = active ? 'none' : '#9B1B30';
+  txt.textContent = active ? 'Save to Wishlist' : 'Saved ✓';
+}
+</script>
+
+<!-- Honey product JS -->
+<script>
+// BUG FIX 4: addHoneyCart() — renamed from addCart() and uses #hxToast
+let hxQ = 1, hxW = false;
+
+function chQty(d) {
+  hxQ = Math.max(1, hxQ + d);
+  document.getElementById('hxQty').textContent = hxQ;
+}
+function selSize(b) {
+  document.querySelectorAll('.hx-size-btn').forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+}
+function addHoneyCart() {
+  const t = document.getElementById('hxToast');
+  t.classList.remove('show');
+  void t.offsetWidth;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+const hxSection = document.querySelector('.hx-sec');
+const hxAnimEls = document.querySelectorAll('.hx-anim-left,.hx-anim-right,.hx-anim-up');
+function hxResetAnims() {
+  hxAnimEls.forEach(el => { el.style.animation = 'none'; void el.offsetWidth; el.style.animation = ''; });
+}
+const hxObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) hxResetAnims(); });
+}, { threshold: 0.15 });
+hxObs.observe(hxSection);
+</script>
+
+<!-- Perfume carousel JS -->
+<script>
+(function() {
+  const track       = document.getElementById('carouselTrack');
+  const dotsCont    = document.getElementById('carouselDots');
+  const progFill    = document.getElementById('progressFill');
+  const prevBtn     = document.getElementById('perfPrevBtn');
+  const nextBtn     = document.getElementById('perfNextBtn');
+
+  let cards, visibleCount, totalSlides, currentIndex = 0;
+  let autoTimer, paused = false;
+  const AUTO_DELAY = 3500;
+
+  function getVisibleCount() {
+    const w = window.innerWidth;
+    if (w < 576) return 1;
+    if (w < 992) return 2;
+    return 3;
+  }
+
+  function setup() {
+    cards        = track.querySelectorAll('.perfume-card');
+    visibleCount = getVisibleCount();
+    totalSlides  = Math.max(1, cards.length - visibleCount + 1);
+    if (currentIndex >= totalSlides) currentIndex = 0;
+    buildDots();
+    goTo(currentIndex, false);
+  }
+
+  function buildDots() {
+    dotsCont.innerHTML = '';
+    for (let i = 0; i < totalSlides; i++) {
+      const d = document.createElement('button');
+      d.className = 'dot' + (i === 0 ? ' active' : '');
+      d.setAttribute('aria-label', 'Slide ' + (i + 1));
+      d.addEventListener('click', function() { goTo(i); resetAuto(); });
+      dotsCont.appendChild(d);
+    }
+  }
+
+  function updateDots() {
+    dotsCont.querySelectorAll('.dot').forEach(function(d, i) {
+      d.classList.toggle('active', i === currentIndex);
+    });
+  }
+
+  function goTo(index, animate) {
+    if (animate === undefined) animate = true;
+    if (!cards.length) return;
+    currentIndex = Math.max(0, Math.min(index, totalSlides - 1));
+    const cardW  = cards[0].offsetWidth;
+    const gap    = 14;
+    const offset = currentIndex * (cardW + gap);
+    track.style.transition = animate
+      ? 'transform 0.6s cubic-bezier(0.25,0.8,0.25,1)'
+      : 'none';
+    track.style.transform  = 'translateX(-' + offset + 'px)';
+    updateDots();
+  }
+
+  function perfNext() {
+    goTo(currentIndex < totalSlides - 1 ? currentIndex + 1 : 0);
+  }
+
+  function perfPrev() {
+    goTo(currentIndex > 0 ? currentIndex - 1 : totalSlides - 1);
+  }
+
+  function startProgress() {
+    progFill.style.transition = 'none';
+    progFill.style.width      = '0%';
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        progFill.style.transition = 'width ' + AUTO_DELAY + 'ms linear';
+        progFill.style.width      = '100%';
+      });
+    });
+  }
+
+  function resetAuto() {
+    clearInterval(autoTimer);
+    startProgress();
+    autoTimer = setInterval(function() {
+      if (!paused) { perfNext(); startProgress(); }
+    }, AUTO_DELAY);
+  }
+
+  prevBtn.addEventListener('click', function() { perfPrev(); resetAuto(); });
+  nextBtn.addEventListener('click', function() { perfNext(); resetAuto(); });
+
+  track.addEventListener('mouseenter', function() { paused = true;  });
+  track.addEventListener('mouseleave', function() { paused = false; });
+
+  var touchStartX = 0;
+  track.addEventListener('touchstart', function(e) {
+    touchStartX = e.touches[0].clientX;
+    paused = true;
+  }, { passive: true });
+  track.addEventListener('touchend', function(e) {
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 40) { dx < 0 ? perfNext() : perfPrev(); resetAuto(); }
+    paused = false;
+  }, { passive: true });
+
+  window.addToCart = function(btn, name) {
+    btn.textContent = '✓ Added';
+    btn.classList.add('added');
+    setTimeout(function() {
+      btn.textContent = '+ Cart';
+      btn.classList.remove('added');
+    }, 2200);
+    var toast = document.getElementById('cartToast');
+    if (toast) {
+      toast.textContent = '✦ ' + name + ' Added';
+      toast.classList.add('show');
+      setTimeout(function() { toast.classList.remove('show'); }, 2400);
+    }
+  };
+
+  track.querySelectorAll('.card-wishlist').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var active = btn.textContent.trim() === '♥';
+      btn.textContent = active ? '♡' : '♥';
+      btn.style.color = active ? '' : 'var(--gold)';
+    });
+  });
+
+  window.addEventListener('resize', setup);
+  setup();
+  resetAuto();
+})();
+</script>
+
+<!-- About section GSAP -->
+<script>
+const ease = "power3.out";
+const ta = "play reverse play reverse";
+
+gsap.fromTo('#line',
+  { scaleX: 0, transformOrigin: 'left' },
+  { scaleX: 1, duration: 1, ease, scrollTrigger: { trigger: '#about', start: 'top 80%', toggleActions: ta } }
+);
+gsap.fromTo('#lbl',
+  { opacity: 0, y: 20 },
+  { opacity: 1, y: 0, duration: 0.8, delay: 0.2, ease, scrollTrigger: { trigger: '#about', start: 'top 80%', toggleActions: ta } }
+);
+gsap.fromTo('#heading',
+  { opacity: 0, y: 50 },
+  { opacity: 1, y: 0, duration: 1, delay: 0.3, ease, scrollTrigger: { trigger: '#about', start: 'top 80%', toggleActions: ta } }
+);
+gsap.fromTo(['#body1','#body2'],
+  { opacity: 0, y: 30 },
+  { opacity: 1, y: 0, duration: 0.9, stagger: 0.2, delay: 0.5, ease, scrollTrigger: { trigger: '#about', start: 'top 75%', toggleActions: ta } }
+);
+gsap.fromTo('.fp',
+  { opacity: 0, scale: 0.85 },
+  { opacity: 1, scale: 1, duration: 0.6, stagger: 0.1, delay: 0.7, ease: 'back.out(1.4)', scrollTrigger: { trigger: '#about', start: 'top 70%', toggleActions: ta } }
+);
+gsap.fromTo('#cta',
+  { opacity: 0, y: 20 },
+  { opacity: 1, y: 0, duration: 0.8, delay: 1, ease, scrollTrigger: { trigger: '#about', start: 'top 70%', toggleActions: ta } }
+);
+gsap.fromTo('#img1',
+  { opacity: 0, x: 60 },
+  { opacity: 1, x: 0, duration: 1, delay: 0.4, ease, scrollTrigger: { trigger: '#img1', start: 'top 85%', toggleActions: ta } }
+);
+gsap.fromTo(['#img2','#img3'],
+  { opacity: 0, x: 40 },
+  { opacity: 1, x: 0, duration: 0.9, stagger: 0.2, delay: 0.6, ease, scrollTrigger: { trigger: '#img1', start: 'top 85%', toggleActions: ta } }
+);
+gsap.fromTo('#divider',
+  { scaleX: 0, transformOrigin: 'left' },
+  { scaleX: 1, duration: 1.2, ease, scrollTrigger: { trigger: '#divider', start: 'top 90%', toggleActions: ta } }
+);
+gsap.fromTo('.sc',
+  { opacity: 0, y: 40 },
+  { opacity: 1, y: 0, duration: 0.7, stagger: 0.15, ease: 'back.out(1.2)', scrollTrigger: { trigger: '.sc', start: 'top 90%', toggleActions: ta } }
+);
+gsap.to('.thread-svg', {
+  y: -60, ease: 'none',
+  scrollTrigger: { trigger: '#about', start: 'top bottom', end: 'bottom top', scrub: true }
+});
+</script>
+
+<!-- Zafran section GSAP -->
+<script>
+const zafEase = "power3.out";
+const zafTa = "play reverse play reverse";
+const zafTr = (el, start) => ({ trigger: el, start: start || 'top 82%', toggleActions: zafTa });
+
+gsap.fromTo('#zaf-wm', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1.5, ease: zafEase, scrollTrigger: { ...zafTr('#zaf-about', 'top 90%') } });
+gsap.to('#zaf-wm', { y: -40, ease: 'none', scrollTrigger: { trigger: '#zaf-about', start: 'top bottom', end: 'bottom top', scrub: 1.5 } });
+gsap.fromTo('#zaf-vlbl', { opacity: 0, x: -15 }, { opacity: 1, x: 0, duration: 1, delay: 0.3, ease: zafEase, scrollTrigger: zafTr('#zaf-about') });
+gsap.fromTo('#zaf-sc-circle', { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 1.4, ease: 'power2.out', scrollTrigger: zafTr('#zaf-about', 'top 85%') });
+gsap.fromTo('#zaf-imgMain', { opacity: 0, y: 50, rotate: -2 }, { opacity: 1, y: 0, rotate: 0, duration: 1.1, ease: zafEase, scrollTrigger: zafTr('#zaf-imgStack', 'top 85%') });
+gsap.fromTo('#zaf-imgSideTop', { opacity: 0, x: 40, y: -20 }, { opacity: 1, x: 0, y: 0, duration: 0.9, delay: 0.2, ease: zafEase, scrollTrigger: zafTr('#zaf-imgStack', 'top 85%') });
+gsap.fromTo('#zaf-imgSideBot', { opacity: 0, x: 40, y: 20 }, { opacity: 1, x: 0, y: 0, duration: 0.9, delay: 0.35, ease: zafEase, scrollTrigger: zafTr('#zaf-imgStack', 'top 85%') });
+gsap.fromTo('#zaf-orn', { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.8, ease: zafEase, scrollTrigger: zafTr('#zaf-about') });
+gsap.fromTo('#zaf-aHead', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1, delay: 0.15, ease: zafEase, scrollTrigger: zafTr('#zaf-about') });
+gsap.fromTo('#zaf-aSub', { opacity: 0, letterSpacing: '8px' }, { opacity: 1, letterSpacing: '4px', duration: 0.9, delay: 0.25, ease: zafEase, scrollTrigger: zafTr('#zaf-about') });
+gsap.fromTo('#zaf-hr', { opacity: 0, scaleX: 0, transformOrigin: 'left' }, { opacity: 1, scaleX: 1, duration: 0.8, delay: 0.35, ease: zafEase, scrollTrigger: zafTr('#zaf-about') });
+gsap.fromTo(['#zaf-aBody1','#zaf-aBody2'], { opacity: 0, y: 25 }, { opacity: 1, y: 0, duration: 0.85, stagger: 0.18, delay: 0.4, ease: zafEase, scrollTrigger: zafTr('#zaf-about') });
+gsap.fromTo('.zaf-rt', { opacity: 0, y: 14, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.55, stagger: 0.08, delay: 0.55, ease: 'back.out(1.5)', scrollTrigger: zafTr('#zaf-about') });
+gsap.fromTo('#zaf-statRow', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, delay: 0.65, ease: zafEase, scrollTrigger: zafTr('#zaf-about') });
+gsap.fromTo('#zaf-ctaRow', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, delay: 0.8, ease: zafEase, scrollTrigger: zafTr('#zaf-about') });
+</script>
+
+<!-- Honey section GSAP -->
+<script>
+const honEase = "power3.out";
+const honTa   = "play reverse play reverse";
+const honTr   = (el, start) => ({ trigger: el, start: start || 'top 82%', toggleActions: honTa });
+
+gsap.fromTo('#hon-wm', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1.5, ease: honEase, scrollTrigger: { ...honTr('#hon-about', 'top 90%') } });
+gsap.to('#hon-wm', { y: -40, ease: 'none', scrollTrigger: { trigger: '#hon-about', start: 'top bottom', end: 'bottom top', scrub: 1.5 } });
+gsap.fromTo('#hon-vlbl', { opacity: 0, x: -15 }, { opacity: 1, x: 0, duration: 1, delay: 0.3, ease: honEase, scrollTrigger: honTr('#hon-about') });
+gsap.fromTo('#hon-sc-circle', { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 1.4, ease: 'power2.out', scrollTrigger: honTr('#hon-about', 'top 85%') });
+gsap.fromTo('#hon-imgMain', { opacity: 0, y: 50, rotate: -2 }, { opacity: 1, y: 0, rotate: 0, duration: 1.1, ease: honEase, scrollTrigger: honTr('#hon-imgStack', 'top 85%') });
+gsap.fromTo('#hon-imgSideTop', { opacity: 0, x: 40, y: -20 }, { opacity: 1, x: 0, y: 0, duration: 0.9, delay: 0.2, ease: honEase, scrollTrigger: honTr('#hon-imgStack', 'top 85%') });
+gsap.fromTo('#hon-imgSideBot', { opacity: 0, x: 40, y: 20 }, { opacity: 1, x: 0, y: 0, duration: 0.9, delay: 0.35, ease: honEase, scrollTrigger: honTr('#hon-imgStack', 'top 85%') });
+gsap.fromTo('#hon-orn', { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.8, ease: honEase, scrollTrigger: honTr('#hon-about') });
+gsap.fromTo('#hon-aHead', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1, delay: 0.15, ease: honEase, scrollTrigger: honTr('#hon-about') });
+gsap.fromTo('#hon-aSub', { opacity: 0, letterSpacing: '8px' }, { opacity: 1, letterSpacing: '4px', duration: 0.9, delay: 0.25, ease: honEase, scrollTrigger: honTr('#hon-about') });
+gsap.fromTo('#hon-hr', { opacity: 0, scaleX: 0, transformOrigin: 'left' }, { opacity: 1, scaleX: 1, duration: 0.8, delay: 0.35, ease: honEase, scrollTrigger: honTr('#hon-about') });
+gsap.fromTo(['#hon-aBody1', '#hon-aBody2'], { opacity: 0, y: 25 }, { opacity: 1, y: 0, duration: 0.85, stagger: 0.18, delay: 0.4, ease: honEase, scrollTrigger: honTr('#hon-about') });
+gsap.fromTo('.hon-rt', { opacity: 0, y: 14, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.55, stagger: 0.08, delay: 0.55, ease: 'back.out(1.5)', scrollTrigger: honTr('#hon-about') });
+gsap.fromTo('#hon-statRow', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, delay: 0.65, ease: honEase, scrollTrigger: honTr('#hon-about') });
+gsap.fromTo('#hon-ctaRow', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, delay: 0.8, ease: honEase, scrollTrigger: honTr('#hon-about') });
+</script>
+
+<!-- Scroll animate-left observer -->
+<script>
+const elements = document.querySelectorAll(".animate-left");
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("show");
+    } else {
+      entry.target.classList.remove("show");
+    }
+  });
+}, { threshold: 0.3 });
+elements.forEach((el) => observer.observe(el));
+</script>
+
+<!-- Navbar & Hero carousel JS -->
+<script>
+/* ── NAVBAR ── */
+const toggler   = document.getElementById('toggler');
+const mobileNav = document.getElementById('mobileNav');
+toggler.addEventListener('click', () => {
+  const open = mobileNav.classList.toggle('open');
+  toggler.classList.toggle('open', open);
+  toggler.setAttribute('aria-expanded', open);
+});
+document.querySelectorAll('#desktopNav a').forEach(a => {
+  a.addEventListener('click', function(){
+    document.querySelectorAll('#desktopNav a').forEach(l => l.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+document.querySelectorAll('.mobile-nav a').forEach(a => {
+  a.addEventListener('click', function(){
+    document.querySelectorAll('.mobile-nav a').forEach(l => l.classList.remove('active'));
+    this.classList.add('active');
+    mobileNav.classList.remove('open');
+    toggler.classList.remove('open');
+    toggler.setAttribute('aria-expanded', false);
+  });
+});
+document.addEventListener('click', e => {
+  if (!toggler.contains(e.target) && !mobileNav.contains(e.target)) {
+    mobileNav.classList.remove('open');
+    toggler.classList.remove('open');
+    toggler.setAttribute('aria-expanded', false);
+  }
+});
+
+/* ── HERO CAROUSEL ── */
+const TOTAL      = 3;
+const HERO_DELAY = 5500;
+let current      = 0;
+let isAnimating  = false;
+let heroTimer    = null;
+
+const bgs     = Array.from({length: TOTAL}, (_, i) => document.getElementById('bg-' + i));
+const dots    = Array.from(document.querySelectorAll('.cdot'));
+const heading = document.getElementById('txtHeading');
+const sub     = document.getElementById('txtSub');
+
+function startKenBurns(el, reverse) {
+  gsap.killTweensOf(el);
+  gsap.fromTo(el,
+    { scale: 1, xPercent: 0 },
+    { scale: 1.12, xPercent: reverse ? -3 : 3, duration: HERO_DELAY / 1000 + 1.5, ease: 'none' }
+  );
+}
+
+function updateText(idx) {
+  const tl = gsap.timeline();
+  tl.to([heading, sub], { opacity: 0, duration: 0.45, ease: 'power2.in' }, 0)
+    .call(() => {
+      heading.innerHTML  = SLIDES[idx].heading;
+      sub.textContent    = SLIDES[idx].sub;
+    })
+    .to([heading, sub], { opacity: 1, duration: 0.6, ease: 'power2.out', stagger: 0.1 }, '+=0.05');
+}
+
+function goTo(next, reverse = false) {
+  if (isAnimating || next === current) return;
+  isAnimating = true;
+  const prev = current;
+  current = next;
+  dots.forEach((d, i) => d.classList.toggle('active', i === current));
+  gsap.set(bgs[current], { opacity: 0, scale: 1, xPercent: 0, zIndex: 2 });
+  gsap.set(bgs[prev],    { zIndex: 1 });
+  startKenBurns(bgs[current], reverse);
+  gsap.to(bgs[current], {
+    opacity: 1, duration: 1.2, ease: 'power2.inOut',
+    onComplete: () => {
+      gsap.set(bgs[prev], { opacity: 0, zIndex: 0 });
+      isAnimating = false;
+    }
+  });
+  updateText(current);
+}
+
+function startHeroAuto() {
+  stopHeroAuto();
+  heroTimer = setInterval(() => goTo((current + 1) % TOTAL), HERO_DELAY);
+}
+function stopHeroAuto() { if (heroTimer) clearInterval(heroTimer); }
+
+// BUG FIX 5: Using heroPrevBtn / heroNextBtn
+document.getElementById('heroPrevBtn').addEventListener('click', () => { stopHeroAuto(); startHeroAuto(); goTo((current - 1 + TOTAL) % TOTAL, true); });
+document.getElementById('heroNextBtn').addEventListener('click', () => { stopHeroAuto(); startHeroAuto(); goTo((current + 1) % TOTAL); });
+dots.forEach(d => {
+  d.addEventListener('click', () => {
+    const idx = parseInt(d.dataset.idx);
+    stopHeroAuto(); startHeroAuto();
+    goTo(idx, idx < current);
+  });
+});
+document.getElementById('heroWrapper').addEventListener('mouseenter', stopHeroAuto);
+document.getElementById('heroWrapper').addEventListener('mouseleave', startHeroAuto);
+
+gsap.set(bgs, { opacity: 0, zIndex: 0 });
+gsap.set(bgs[0], { opacity: 1, zIndex: 2 });
+startKenBurns(bgs[0], false);
+gsap.set([heading, sub], { opacity: 0 });
+gsap.set('.contact-btn', { opacity: 0 });
+gsap.to(heading,       { opacity: 1, duration: 0.7, ease: 'power2.out', delay: 0.45 });
+gsap.to(sub,           { opacity: 1, duration: 0.7, ease: 'power2.out', delay: 0.6 });
+gsap.to('.contact-btn',{ opacity: 1, duration: 0.5, ease: 'power2.out', delay: 0.78 });
+startHeroAuto();
+</script>
+<script>
+/* ── Navbar scroll effect ── */
+(function () {
+  var nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', function () {
+    nav.classList.toggle('scrolled', window.scrollY > 10);
+  }, { passive: true });
+})();
+
+/* ── Mobile nav toggle ── */
+(function () {
+  var toggler = document.getElementById('nbToggler');
+  var mobile  = document.getElementById('nbMobile');
+
+  toggler.addEventListener('click', function () {
+    var open = mobile.classList.toggle('nb--open');
+    toggler.classList.toggle('nb--open', open);
+    toggler.setAttribute('aria-expanded', open);
+    mobile.setAttribute('aria-hidden', !open);
+  });
+
+  // Close on outside click
+  document.addEventListener('click', function (e) {
+    if (!toggler.contains(e.target) && !mobile.contains(e.target)) {
+      mobile.classList.remove('nb--open');
+      toggler.classList.remove('nb--open');
+      toggler.setAttribute('aria-expanded', 'false');
+      mobile.setAttribute('aria-hidden', 'true');
+    }
+  });
+})();
+
+/* ── Hero carousel (fully scoped IIFE) ── */
+(function () {
+  var SLIDES = [
+    {
+      badge:   'Premium Collection',
+      heading: 'Let us bring life<br>to your Garden',
+      sub:     'Where Full Service Landscape Management have been our passion since 1979 and providing customer satisfaction is our goal and guarantee!'
+    },
+    {
+      badge:   'Rare Essences',
+      heading: 'Handcrafted with<br>Nature\'s Finest',
+      sub:     'Discover our exclusive range of organic botanical products — crafted with care, delivered with love.'
+    },
+    {
+      badge:   'New Arrivals',
+      heading: 'Pure. Natural.<br>Timeless.',
+      sub:     'Experience the harmony of nature with our curated seasonal collection, now available in limited quantities.'
+    }
+  ];
+
+  var DELAY = 5000;
+
+  var bgs       = document.querySelectorAll('.hr__bg');
+  var dots      = document.querySelectorAll('.hr__dot');
+  var prevBtn   = document.getElementById('heroPrevBtn');
+  var nextBtn   = document.getElementById('heroNextBtn');
+  var badgeTxt  = document.getElementById('hrBadgeTxt');
+  var heading   = document.getElementById('hrHeading');
+  var sub       = document.getElementById('hrSub');
+  var currEl    = document.getElementById('hrCurr');
+  var totalEl   = document.getElementById('hrTotal');
+  var progFill  = document.getElementById('hrProgFill');
+
+  var current   = 0;
+  var timer     = null;
+  var paused    = false;
+
+  totalEl.textContent = ('0' + SLIDES.length).slice(-2);
+
+  function pad(n) { return ('0' + (n + 1)).slice(-2); }
+
+  function goTo(idx) {
+    // Clamp & wrap
+    idx = ((idx % SLIDES.length) + SLIDES.length) % SLIDES.length;
+
+    // Backgrounds
+    bgs[current].classList.remove('hr--active');
+    bgs[idx].classList.add('hr--active');
+
+    // Dots
+    dots[current].classList.remove('hr--active');
+    dots[idx].classList.add('hr--active');
+
+    // Text update (quick fade via opacity trick)
+    var s = SLIDES[idx];
+    badgeTxt.textContent = s.badge;
+    heading.innerHTML    = s.heading;
+    sub.textContent      = s.sub;
+
+    // Counter
+    currEl.textContent = pad(idx);
+
+    current = idx;
+    startProgress();
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  function startProgress() {
+    progFill.style.transition = 'none';
+    progFill.style.width      = '0%';
+    // Double rAF ensures browser applies the reset before starting transition
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        progFill.style.transition = 'width ' + DELAY + 'ms linear';
+        progFill.style.width      = '100%';
+      });
+    });
+  }
+
+  function resetTimer() {
+    clearInterval(timer);
+    startProgress();
+    timer = setInterval(function () {
+      if (!paused) next();
+    }, DELAY);
+  }
+
+  // Arrow buttons
+  prevBtn.addEventListener('click', function () { prev(); resetTimer(); });
+  nextBtn.addEventListener('click', function () { next(); resetTimer(); });
+
+  // Dot buttons
+  dots.forEach(function (dot) {
+    dot.addEventListener('click', function () {
+      goTo(parseInt(this.getAttribute('data-idx'), 10));
+      resetTimer();
+    });
+  });
+
+  // Pause on hover
+  var wrapper = document.getElementById('heroWrapper');
+  wrapper.addEventListener('mouseenter', function () { paused = true; });
+  wrapper.addEventListener('mouseleave', function () { paused = false; });
+
+  // Touch swipe
+  var touchX = 0;
+  wrapper.addEventListener('touchstart', function (e) {
+    touchX = e.touches[0].clientX;
+    paused = true;
+  }, { passive: true });
+  wrapper.addEventListener('touchend', function (e) {
+    var dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 45) { dx < 0 ? next() : prev(); resetTimer(); }
+    paused = false;
+  }, { passive: true });
+
+  // Keyboard navigation
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft')  { prev(); resetTimer(); }
+    if (e.key === 'ArrowRight') { next(); resetTimer(); }
+  });
+
+  // Kick off
+  resetTimer();
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

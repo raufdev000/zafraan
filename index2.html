@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bảo Vy – Nature Care</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<style>
+/* ═══════════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --crimson:    #9B1B30;
+  --crimson-dk: #7a1525;
+  --gold:       #FFDF00;
+  --rose-gold:  #E8C84A;
+  --white:      #ffffff;
+  --topbar-h:   42px;
+  --nav-h:      80px;          /* desktop */
+  --nav-h-mob:  64px;          /* mobile  */
+  --total-header: calc(var(--topbar-h) + var(--nav-h));
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: #f9f6f0;
+  color: #222;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════════════════════
+   TOP BAR
+═══════════════════════════════════════════════ */
+.tb {
+  background: var(--crimson);
+  height: var(--topbar-h);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  z-index: 200;
+  flex-shrink: 0;
+}
+
+.tb__inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0 140px 0 16px; /* right padding leaves room for socials */
+}
+
+/* Scrolling marquee text */
+.tb__marquee {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
+.tb__msg {
+  display: inline-block;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .3px;
+  animation: tbScroll 22s linear infinite;
+}
+@keyframes tbScroll {
+  0%   { transform: translateX(60vw); }
+  100% { transform: translateX(-100%); }
+}
+
+/* Social pill — absolutely positioned right */
+.tb__socials {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 30px;
+  display: flex;
+  align-items: stretch;
+  background: var(--gold);
+  border-radius: 999px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.tb__scell {
+  width: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid rgba(155,27,48,.2);
+  /* FIX: icon color is crimson on gold — readable */
+  color: var(--crimson);
+  font-size: 13px;
+  text-decoration: none;
+  transition: background .2s, color .2s;
+}
+.tb__scell:first-child { border-left: none; }
+.tb__scell:hover { background: var(--crimson); color: var(--gold); }
+
+/* ═══════════════════════════════════════════════
+   NAVBAR  — sticky, sits on top of hero
+═══════════════════════════════════════════════ */
+.nb {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: transparent;
+  transition: background .35s, box-shadow .35s, padding .35s;
+  min-height: var(--nav-h);
+}
+/* Scrolled state applied by JS */
+.nb.scrolled {
+  background: rgba(255,255,255,.97);
+  box-shadow: 0 2px 24px rgba(0,0,0,.1);
+  padding: 6px 20px;
+  backdrop-filter: blur(12px);
+}
+
+/* Brand card */
+.nb__brand {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 8px 18px 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: box-shadow .22s, transform .22s;
+  box-shadow: 0 2px 12px rgba(0,0,0,.12);
+}
+.nb__brand:hover { box-shadow: 0 6px 24px rgba(0,0,0,.18); transform: translateY(-1px); }
+.nb__logo {
+  width: 38px; height: 38px;
+  border-radius: 8px;
+  background: #fff8e7;
+  border: 2px dashed var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--crimson); font-size: 18px; flex-shrink: 0;
+}
+.nb__name {
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--crimson);
+  white-space: nowrap;
+  letter-spacing: -.1px;
+}
+
+/* Nav pill — FIX: pill hugs the nav links, no dead space on right */
+.nb__pill {
+  background: rgba(255,255,255,.92);
+  border-radius: 999px;
+  height: 58px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 28px;
+  box-shadow: 0 2px 16px rgba(0,0,0,.1);
+  backdrop-filter: blur(8px);
+  min-width: 0;
+  overflow: visible;
+}
+.nb__list {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  width: auto;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: nowrap;
+}
+/* FIX: renamed from .dot to .nb__sep to avoid perfume carousel clash */
+.nb__sep {
+  color: var(--crimson);
+  font-size: 6px;
+  margin: 0 4px;
+  flex-shrink: 0;
+  opacity: .65;
+  user-select: none;
+}
+.nb__list li a {
+  font-family: 'Cinzel', serif;
+  color: #222;
+  text-decoration: none;
+  font-size: clamp(13px, 1.4vw, 17px);
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 8px;
+  white-space: nowrap;
+  position: relative;
+  transition: color .2s, background .2s;
+  display: block;
+}
+.nb__list li a::after {
+  content: '';
+  position: absolute;
+  bottom: 2px; left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 60%; height: 2px;
+  background: var(--gold);
+  border-radius: 2px;
+  transition: transform .22s ease;
+}
+.nb__list li a:hover { color: var(--crimson); background: rgba(155,27,48,.05); }
+.nb__list li a:hover::after,
+.nb__list li a.nb--active::after { transform: translateX(-50%) scaleX(1); }
+.nb__list li a.nb--active { color: var(--crimson); }
+
+/* Hamburger — hidden on desktop */
+.nb__toggler {
+  display: none;
+  background: var(--white);
+  border: none;
+  border-radius: 12px;
+  width: 46px; height: 46px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: box-shadow .2s;
+  box-shadow: 0 2px 12px rgba(0,0,0,.12);
+}
+.nb__toggler:hover { box-shadow: 0 4px 16px rgba(155,27,48,.25); }
+.nb__bar {
+  width: 22px; height: 2.5px;
+  background: var(--crimson);
+  border-radius: 2px;
+  transition: transform .3s, opacity .3s;
+}
+.nb__toggler.nb--open .nb__bar:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+.nb__toggler.nb--open .nb__bar:nth-child(2) { opacity: 0; }
+.nb__toggler.nb--open .nb__bar:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+/* ═══════════════════════════════════════════════
+   MOBILE NAV DROPDOWN
+═══════════════════════════════════════════════ */
+.nb__mobile {
+  display: none;              /* hidden until .nb--open added */
+  position: sticky;
+  top: var(--nav-h-mob);
+  z-index: 190;
+  background: var(--white);
+  border-radius: 0 0 20px 20px;
+  margin: 0;
+  padding: 8px 12px 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.14);
+  animation: mobSlide .25s ease;
+  max-height: calc(100vh - var(--topbar-h) - var(--nav-h-mob));
+  overflow-y: auto;
+}
+.nb__mobile.nb--open { display: block; }
+@keyframes mobSlide {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.nb__mobile a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #222;
+  text-decoration: none;
+  transition: background .18s, color .18s, padding-left .2s;
+}
+.nb__mobile a:hover,
+.nb__mobile a.nb--active { background: rgba(155,27,48,.07); color: var(--crimson); padding-left: 22px; }
+.nb__mobile a.nb--active { font-weight: 600; }
+.nb__msep { height: 1px; background: rgba(155,27,48,.1); margin: 4px 8px; }
+
+/* ═══════════════════════════════════════════════
+   HERO
+   FIX: no negative margin-top — hero stacks naturally
+   below sticky navbar. Height = 100vh minus header.
+═══════════════════════════════════════════════ */
+.hr {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - var(--topbar-h) - var(--nav-h));
+  min-height: 500px;
+  overflow: hidden;
+}
+
+/* Slide backgrounds */
+.hr__bg {
+  position: absolute; inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  z-index: 0;
+  transition: opacity .9s ease;
+}
+.hr__bg.hr--active { opacity: 1; }
+.hr__bg::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(0,0,0,.85) 0%,
+    rgba(155,27,48,.28) 55%,
+    rgba(0,0,0,.78) 100%
+  );
+}
+
+/* Slide images — replace with your actual files */
+.hr__bg-1 { background-image: url('slide1.webp'); }
+.hr__bg-2 { background-image: url('Saffraan.webp'); }
+.hr__bg-3 { background-image: url('slide2.webp'); }
+
+/* Fallback gradient when images missing (demo) */
+.hr__bg-1 { background-color: #1a0a0e; }
+.hr__bg-2 { background-color: #0d1a0e; }
+.hr__bg-3 { background-color: #0a0d1a; }
+
+/* Content */
+.hr__content {
+  position: absolute; inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 24px 80px;
+  pointer-events: none;
+}
+
+/* Badge */
+.hr__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #972739 0%, #b5566a 45%, #9B1B30 100%);
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 10px 22px;
+  border-radius: 999px;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+  pointer-events: auto;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.2) inset,
+              0 4px 20px rgba(155,27,48,.5);
+}
+.hr__badge::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -75%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.45), transparent);
+  transform: skewX(-20deg);
+  animation: hrShimmer 2.8s ease-in-out infinite;
+}
+@keyframes hrShimmer {
+  0%  { left: -75%; }
+  60% { left: 130%; }
+  100%{ left: 130%; }
+}
+.hr__bdot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,.7); flex-shrink: 0; }
+
+/* Heading */
+.hr__heading {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(28px, 5.5vw, 72px);
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1.08;
+  letter-spacing: -1px;
+  margin-bottom: 18px;
+  max-width: 880px;
+  text-shadow: 0 4px 32px rgba(0,0,0,.4);
+}
+
+/* Sub */
+.hr__sub {
+  font-size: clamp(13px, 1.6vw, 16px);
+  color: rgba(255,255,255,.82);
+  max-width: 580px;
+  line-height: 1.8;
+  margin-bottom: 38px;
+  font-weight: 400;
+}
+
+/* CTA button */
+.hr__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #972739 0%, #b5566a 45%, #9B1B30 100%);
+  color: var(--gold);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 14px 36px;
+  border-radius: 999px;
+  text-decoration: none;
+  letter-spacing: .2px;
+  pointer-events: auto;
+  transition: background .22s, color .22s, transform .22s, box-shadow .22s;
+  box-shadow: 0 8px 32px rgba(0,0,0,.22);
+}
+.hr__cta:hover {
+  background: var(--crimson-dk);
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 14px 40px rgba(155,27,48,.45);
+}
+.hr__cta i { font-size: 17px; }
+
+/* Arrows — FIX: renamed IDs heroPrevBtn/heroNextBtn, no ID conflict */
+.hr__arrow {
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  z-index: 10;
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.15);
+  border: 1.5px solid rgba(255,255,255,.35);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  color: #fff;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: background .2s, color .2s, transform .2s, box-shadow .2s;
+}
+.hr__arrow:hover {
+  background: var(--crimson);
+  border-color: var(--gold);
+  color: var(--gold);
+  transform: translateY(-50%) scale(1.08);
+  box-shadow: 0 6px 28px rgba(155,27,48,.45);
+}
+.hr__arrow--prev { left: 20px; }
+.hr__arrow--next { right: 20px; }
+
+/* Dots — FIX: renamed .cdot → .hr__dot to avoid any style bleed */
+.hr__dots {
+  position: absolute;
+  bottom: 24px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.hr__dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.4);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background .3s, transform .3s, width .3s;
+}
+.hr__dot.hr--active {
+  background: var(--gold);
+  transform: scale(1.35);
+  width: 24px;
+  border-radius: 5px;
+}
+
+/* Progress bar */
+.hr__progress {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: rgba(255,255,255,.12);
+  z-index: 10;
+}
+.hr__progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--crimson), var(--gold));
+  transition: width linear;
+}
+
+/* Slide counter */
+.hr__counter {
+  position: absolute;
+  bottom: 20px;
+  right: 24px;
+  z-index: 10;
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  color: rgba(255,255,255,.55);
+  letter-spacing: 2px;
+  pointer-events: none;
+}
+.hr__counter span { color: var(--gold); font-weight: 700; }
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+═══════════════════════════════════════════════ */
+
+/* Tablet */
+@media (max-width: 991px) {
+  .nb__pill  { display: none; }
+  .nb__toggler { display: flex; }
+  .nb { min-height: var(--nav-h-mob); padding: 8px 16px; }
+
+  .hr {
+    height: calc(100vh - var(--topbar-h) - var(--nav-h-mob));
+    min-height: 420px;
+  }
+  .hr__content { padding: 30px 20px 70px; }
+  .hr__arrow { width: 40px; height: 40px; font-size: 15px; }
+  .hr__arrow--prev { left: 12px; }
+  .hr__arrow--next { right: 12px; }
+
+  /* Topbar: hide scrolling text on very small, keep socials */
+  .tb__inner { padding: 0 130px 0 12px; }
+}
+
+/* Mobile */
+@media (max-width: 575px) {
+  :root { --topbar-h: 38px; }
+
+  .tb__msg { font-size: 12px; }
+  .tb__scell { width: 30px; font-size: 12px; }
+
+  .nb__brand { padding: 6px 14px 6px 10px; border-radius: 12px; }
+  .nb__logo  { width: 34px; height: 34px; font-size: 16px; }
+  .nb__name  { font-size: 16px; }
+
+  .hr__heading { letter-spacing: -.5px; }
+  .hr__badge   { font-size: 10px; padding: 8px 16px; }
+  .hr__cta     { font-size: 14px; padding: 12px 28px; }
+
+  /* Hide arrows on very small screens — swipe instead */
+  .hr__arrow { display: none; }
+  .hr__counter { display: none; }
+
+  .hr__dots { bottom: 16px; }
+}
+
+/* Large desktop */
+@media (min-width: 1400px) {
+  .nb__list li a { font-size: 17px; padding: 8px 14px; }
+  .nb__pill { padding: 0 40px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ TOP BAR ══ -->
+<div class="tb">
+  <div class="tb__inner">
+    <div class="tb__marquee">
+    <span class="tb__msg">
+  🌿 Chào mừng đến Bảo Vy – Thiên Nhiên Thuần Khiết Cho Bạn! &nbsp;&nbsp;&nbsp; ✦ &nbsp;&nbsp;&nbsp;
+  Miễn phí vận chuyển cho đơn hàng từ 500.000₫ trở lên &nbsp;&nbsp;&nbsp; ✦ &nbsp;&nbsp;&nbsp;
+  Bộ sưu tập thảo mộc hữu cơ cao cấp — Mua ngay hôm nay &nbsp;&nbsp;&nbsp; ✦ &nbsp;&nbsp;&nbsp;
+  🎁 Quà tặng đặc biệt cho đơn hàng trên 1.200.000₫ &nbsp;&nbsp;&nbsp; ✦ &nbsp;&nbsp;&nbsp;
+  Sản phẩm thiên nhiên 100% — Không hóa chất độc hại &nbsp;&nbsp;&nbsp; ✦ &nbsp;&nbsp;&nbsp;
+  📦 Giao hàng toàn quốc trong 24 giờ &nbsp;&nbsp;&nbsp; ✦ &nbsp;&nbsp;&nbsp;
+  🌸 Combo chăm sóc da cao cấp từ 2.500.000₫ — Tiết kiệm 30%
+</span>
+    </div>
+    <div class="tb__socials">
+      <a href="#" class="tb__scell" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+      <a href="#" class="tb__scell" aria-label="Twitter/X"><i class="bi bi-twitter-x"></i></a>
+      <a href="#" class="tb__scell" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+      <a href="#" class="tb__scell" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+    </div>
+  </div>
+</div>
+
+<!-- ══ NAVBAR ══ -->
+<div class="nb" id="mainNav">
+  <a href="#" class="nb__brand">
+    <div class="nb__logo"><i class="bi bi-flower1"></i></div>
+    <span class="nb__name">Bảo Vy</span>
+  </a>
+
+  <nav class="nb__pill" aria-label="Main navigation">
+    <ul class="nb__list">
+      <li><a href="#" class="nb--active">Home</a></li>
+      <li><span class="nb__sep">&#9670;</span></li>
+      <li><a href="#">Pages</a></li>
+      <li><span class="nb__sep">&#9670;</span></li>
+      <li><a href="#">Services</a></li>
+      <li><span class="nb__sep">&#9670;</span></li>
+      <li><a href="#">Portfolio</a></li>
+      <li><span class="nb__sep">&#9670;</span></li>
+      <li><a href="#">Shop</a></li>
+      <li><span class="nb__sep">&#9670;</span></li>
+      <li><a href="#">Blog</a></li>
+    </ul>
+  </nav>
+
+  <button class="nb__toggler" id="nbToggler" aria-label="Toggle menu" aria-expanded="false">
+    <span class="nb__bar"></span>
+    <span class="nb__bar"></span>
+    <span class="nb__bar"></span>
+  </button>
+</div>
+
+<!-- Mobile Menu — separate from navbar so it doesn't push nav content -->
+<div class="nb__mobile" id="nbMobile" aria-hidden="true">
+  <a href="#" class="nb--active"><i class="bi bi-house-door"></i> Home</a>
+  <div class="nb__msep"></div>
+  <a href="#"><i class="bi bi-file-text"></i> Pages</a>
+  <a href="#"><i class="bi bi-briefcase"></i> Services</a>
+  <a href="#"><i class="bi bi-grid-3x3-gap"></i> Portfolio</a>
+  <div class="nb__msep"></div>
+  <a href="#"><i class="bi bi-bag"></i> Shop</a>
+  <a href="#"><i class="bi bi-journal-richtext"></i> Blog</a>
+</div>
+
+<!-- ══ HERO ══ -->
+<div class="hr" id="heroWrapper">
+
+  <!-- Slide backgrounds -->
+  <div class="hr__bg hr__bg-1 hr--active" id="hrBg0"></div>
+  <div class="hr__bg hr__bg-2"            id="hrBg1"></div>
+  <div class="hr__bg hr__bg-3"            id="hrBg2"></div>
+
+  <!-- Text content -->
+  <div class="hr__content">
+    <div class="hr__badge">
+      <span class="hr__bdot"></span>
+      <span id="hrBadgeTxt">Premium Collection</span>
+      <span class="hr__bdot"></span>
+    </div>
+    <h1 class="hr__heading" id="hrHeading">Let us bring life<br>to your Garden</h1>
+    <p  class="hr__sub"     id="hrSub">Where Full Service Landscape Management have been our passion since 1979 and providing customer satisfaction is our goal and guarantee!</p>
+    <a href="#" class="hr__cta"><span>Contact Us</span><i class="bi bi-send"></i></a>
+  </div>
+
+  <!-- Navigation arrows — IDs scoped with hr prefix -->
+  <button class="hr__arrow hr__arrow--prev" id="heroPrevBtn" aria-label="Previous slide">
+    <i class="bi bi-chevron-left"></i>
+  </button>
+  <button class="hr__arrow hr__arrow--next" id="heroNextBtn" aria-label="Next slide">
+    <i class="bi bi-chevron-right"></i>
+  </button>
+
+  <!-- Dots — class .hr__dot, no clash -->
+  <div class="hr__dots" id="hrDots">
+    <button class="hr__dot hr--active" data-idx="0" aria-label="Slide 1"></button>
+    <button class="hr__dot"            data-idx="1" aria-label="Slide 2"></button>
+    <button class="hr__dot"            data-idx="2" aria-label="Slide 3"></button>
+  </div>
+
+  <!-- Slide counter -->
+  <div class="hr__counter">
+    <span id="hrCurr">01</span> / <span id="hrTotal">03</span>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="hr__progress">
+    <div class="hr__progress-fill" id="hrProgFill"></div>
+  </div>
+</div>
+
+<!-- ══ SCRIPTS ══ -->
+<script>
+/* ── Navbar scroll effect ── */
+(function () {
+  var nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', function () {
+    nav.classList.toggle('scrolled', window.scrollY > 10);
+  }, { passive: true });
+})();
+
+/* ── Mobile nav toggle ── */
+(function () {
+  var toggler = document.getElementById('nbToggler');
+  var mobile  = document.getElementById('nbMobile');
+
+  toggler.addEventListener('click', function () {
+    var open = mobile.classList.toggle('nb--open');
+    toggler.classList.toggle('nb--open', open);
+    toggler.setAttribute('aria-expanded', open);
+    mobile.setAttribute('aria-hidden', !open);
+  });
+
+  // Close on outside click
+  document.addEventListener('click', function (e) {
+    if (!toggler.contains(e.target) && !mobile.contains(e.target)) {
+      mobile.classList.remove('nb--open');
+      toggler.classList.remove('nb--open');
+      toggler.setAttribute('aria-expanded', 'false');
+      mobile.setAttribute('aria-hidden', 'true');
+    }
+  });
+})();
+
+/* ── Hero carousel (fully scoped IIFE) ── */
+(function () {
+  var SLIDES = [
+    {
+      badge:   'Premium Collection',
+      heading: 'Let us bring life<br>to your Garden',
+      sub:     'Where Full Service Landscape Management have been our passion since 1979 and providing customer satisfaction is our goal and guarantee!'
+    },
+    {
+      badge:   'Rare Essences',
+      heading: 'Handcrafted with<br>Nature\'s Finest',
+      sub:     'Discover our exclusive range of organic botanical products — crafted with care, delivered with love.'
+    },
+    {
+      badge:   'New Arrivals',
+      heading: 'Pure. Natural.<br>Timeless.',
+      sub:     'Experience the harmony of nature with our curated seasonal collection, now available in limited quantities.'
+    }
+  ];
+
+  var DELAY = 5000;
+
+  var bgs       = document.querySelectorAll('.hr__bg');
+  var dots      = document.querySelectorAll('.hr__dot');
+  var prevBtn   = document.getElementById('heroPrevBtn');
+  var nextBtn   = document.getElementById('heroNextBtn');
+  var badgeTxt  = document.getElementById('hrBadgeTxt');
+  var heading   = document.getElementById('hrHeading');
+  var sub       = document.getElementById('hrSub');
+  var currEl    = document.getElementById('hrCurr');
+  var totalEl   = document.getElementById('hrTotal');
+  var progFill  = document.getElementById('hrProgFill');
+
+  var current   = 0;
+  var timer     = null;
+  var paused    = false;
+
+  totalEl.textContent = ('0' + SLIDES.length).slice(-2);
+
+  function pad(n) { return ('0' + (n + 1)).slice(-2); }
+
+  function goTo(idx) {
+    // Clamp & wrap
+    idx = ((idx % SLIDES.length) + SLIDES.length) % SLIDES.length;
+
+    // Backgrounds
+    bgs[current].classList.remove('hr--active');
+    bgs[idx].classList.add('hr--active');
+
+    // Dots
+    dots[current].classList.remove('hr--active');
+    dots[idx].classList.add('hr--active');
+
+    // Text update (quick fade via opacity trick)
+    var s = SLIDES[idx];
+    badgeTxt.textContent = s.badge;
+    heading.innerHTML    = s.heading;
+    sub.textContent      = s.sub;
+
+    // Counter
+    currEl.textContent = pad(idx);
+
+    current = idx;
+    startProgress();
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  function startProgress() {
+    progFill.style.transition = 'none';
+    progFill.style.width      = '0%';
+    // Double rAF ensures browser applies the reset before starting transition
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        progFill.style.transition = 'width ' + DELAY + 'ms linear';
+        progFill.style.width      = '100%';
+      });
+    });
+  }
+
+  function resetTimer() {
+    clearInterval(timer);
+    startProgress();
+    timer = setInterval(function () {
+      if (!paused) next();
+    }, DELAY);
+  }
+
+  // Arrow buttons
+  prevBtn.addEventListener('click', function () { prev(); resetTimer(); });
+  nextBtn.addEventListener('click', function () { next(); resetTimer(); });
+
+  // Dot buttons
+  dots.forEach(function (dot) {
+    dot.addEventListener('click', function () {
+      goTo(parseInt(this.getAttribute('data-idx'), 10));
+      resetTimer();
+    });
+  });
+
+  // Pause on hover
+  var wrapper = document.getElementById('heroWrapper');
+  wrapper.addEventListener('mouseenter', function () { paused = true; });
+  wrapper.addEventListener('mouseleave', function () { paused = false; });
+
+  // Touch swipe
+  var touchX = 0;
+  wrapper.addEventListener('touchstart', function (e) {
+    touchX = e.touches[0].clientX;
+    paused = true;
+  }, { passive: true });
+  wrapper.addEventListener('touchend', function (e) {
+    var dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 45) { dx < 0 ? next() : prev(); resetTimer(); }
+    paused = false;
+  }, { passive: true });
+
+  // Keyboard navigation
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft')  { prev(); resetTimer(); }
+    if (e.key === 'ArrowRight') { next(); resetTimer(); }
+  });
+
+  // Kick off
+  resetTimer();
+})();
+</script>
+</body>
+</html>
